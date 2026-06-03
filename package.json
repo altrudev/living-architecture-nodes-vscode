@@ -1,0 +1,133 @@
+{
+  "name": "living-architecture-nodes-vscode",
+  "displayName": "Living Architecture Nodes",
+  "description": "VS Code extension for Living Architecture Nodes architecture-memory checks, node generation, and AI/dev handoff exports.",
+  "version": "0.1.0",
+  "publisher": "altrudev",
+  "private": false,
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "categories": [
+    "Other",
+    "Linters"
+  ],
+  "keywords": [
+    "software architecture",
+    "AI assisted development",
+    "developer tools",
+    "documentation",
+    "diagnostics",
+    "technical debt",
+    "architecture memory"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:livingArchitectureNodes.statusView",
+    "onCommand:livingArchitectureNodes.scanWorkspace",
+    "onCommand:livingArchitectureNodes.generateMissingNodes",
+    "onCommand:livingArchitectureNodes.exportHandoffBundle",
+    "onCommand:livingArchitectureNodes.openARCH",
+    "onCommand:livingArchitectureNodes.openNERVE",
+    "onCommand:livingArchitectureNodes.openChangelog"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "livingArchitectureNodes",
+          "title": "Living Architecture Nodes",
+          "icon": "media/lan-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "livingArchitectureNodes": [
+        {
+          "id": "livingArchitectureNodes.statusView",
+          "name": "Architecture Memory"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "livingArchitectureNodes.scanWorkspace",
+        "title": "Living Architecture Nodes: Scan Workspace",
+        "icon": "$(search)"
+      },
+      {
+        "command": "livingArchitectureNodes.generateMissingNodes",
+        "title": "Living Architecture Nodes: Generate Missing Node Files",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "livingArchitectureNodes.exportHandoffBundle",
+        "title": "Living Architecture Nodes: Export AI/Dev Handoff Bundle",
+        "icon": "$(export)"
+      },
+      {
+        "command": "livingArchitectureNodes.openARCH",
+        "title": "Living Architecture Nodes: Open ARCH.md",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "livingArchitectureNodes.openNERVE",
+        "title": "Living Architecture Nodes: Open NERVE.md",
+        "icon": "$(pulse)"
+      },
+      {
+        "command": "livingArchitectureNodes.openChangelog",
+        "title": "Living Architecture Nodes: Open CHANGELOG.node.md",
+        "icon": "$(history)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "livingArchitectureNodes.scanWorkspace",
+          "when": "view == livingArchitectureNodes.statusView",
+          "group": "navigation"
+        },
+        {
+          "command": "livingArchitectureNodes.exportHandoffBundle",
+          "when": "view == livingArchitectureNodes.statusView",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "livingArchitectureNodes.generateMissingNodes",
+          "when": "view == livingArchitectureNodes.statusView && viewItem == lanMissingNode",
+          "group": "inline"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Living Architecture Nodes",
+      "properties": {
+        "livingArchitectureNodes.sourceExtensions": {
+          "type": "array",
+          "default": [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".py", ".cs", ".java", ".go", ".rs", ".php", ".rb", ".swift", ".kt", ".kts", ".vue", ".svelte", ".html", ".css", ".yml", ".yaml"],
+          "description": "Source file extensions that should have companion .node.md files."
+        },
+        "livingArchitectureNodes.excludeGlobs": {
+          "type": "array",
+          "default": ["**/.git/**", "**/node_modules/**", "**/dist/**", "**/build/**", "**/out/**", "**/coverage/**", "**/.next/**", "**/.nuxt/**", "**/.turbo/**", "**/.cache/**", "**/vendor/**", "**/.venv/**", "**/venv/**", "**/__pycache__/**", "**/.lan-vscode/**"],
+          "description": "Glob patterns excluded from scanning."
+        },
+        "livingArchitectureNodes.exportPath": {
+          "type": "string",
+          "default": ".lan-vscode",
+          "description": "Workspace-relative folder for diagnostic exports."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "self-check": "node scripts/self-check.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {}
+}

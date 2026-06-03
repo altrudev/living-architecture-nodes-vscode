@@ -1,0 +1,22 @@
+Living Architecture Nodes VS Code Extension Source-Visible License v0.1
+
+Copyright (c) 2026 Valentyn Rukhaylo / Altru.dev
+
+Permission is granted to view, download, and use this repository for evaluation,
+installation, personal/internal development workflow, and compatibility testing
+with the official Living Architecture Nodes VS Code extension.
+
+You may not sell, sublicense, repackage, rebrand, distribute modified versions,
+or use this code to operate a competing commercial product or service without
+written permission from Valentyn Rukhaylo / Altru.dev.
+
+The Living Architecture Nodes name and related branding are not granted under
+this license. See TRADEMARK.md for brand-use guidance.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
