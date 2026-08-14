@@ -127,6 +127,8 @@
   },
   "scripts": {
     "self-check": "node scripts/self-check.js && node scripts/scanner-regression-check.js",
+    "test:conformance": "node --test tests/scanner-conformance.test.js",
+    "gate": "npm run self-check && npm run test:conformance",
     "package": "vsce package"
   },
   "devDependencies": {}
