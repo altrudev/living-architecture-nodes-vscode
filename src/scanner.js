@@ -15,7 +15,7 @@ async function scanWorkspace(rootPath, options = {}) {
     .filter((file) => isSourceFile(file, sourceExtensions))
     .filter((file) => !file.endsWith('.node.md'));
 
-  const nodeFiles = files.filter((file) => file.endsWith('.node.md'));
+  const nodeFiles = files.filter((file) => file.endsWith('.node.md') && toPosix(file) !== 'CHANGELOG.node.md');
   const nodeFileSet = new Set(nodeFiles.map(toPosix));
 
   const missingRequired = [];
