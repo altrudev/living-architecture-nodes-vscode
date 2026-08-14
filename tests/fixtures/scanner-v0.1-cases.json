@@ -1,0 +1,17 @@
+{
+  "schema": "living-architecture-nodes-consumer/scanner-conformance-copy/0.1",
+  "upstream": {
+    "repository": "altrudev/living-architecture-nodes",
+    "commit": "374824cd735beecd8c081f4cda2e888c085ba26e",
+    "path": "conformance/scanner/v0.1-cases.json",
+    "schema": "living-architecture-nodes/scanner-conformance/0.1"
+  },
+  "required_artifacts": ["ARCH.md", "NERVE.md", "CHANGELOG.node.md"],
+  "cases": [
+    {"id":"healthy-paired-source","files":["ARCH.md","NERVE.md","CHANGELOG.node.md","src/app.js","src/app.node.md"],"source_extensions":[".js"],"expected":{"missing_required":[],"source_files":["src/app.js"],"node_files":["src/app.node.md"],"missing_nodes":[],"orphan_nodes":[]}},
+    {"id":"missing-companion","files":["ARCH.md","NERVE.md","CHANGELOG.node.md","src/app.js"],"source_extensions":[".js"],"expected":{"missing_required":[],"source_files":["src/app.js"],"node_files":[],"missing_nodes":[{"source_path":"src/app.js","node_path":"src/app.node.md"}],"orphan_nodes":[]}},
+    {"id":"orphan-companion","files":["ARCH.md","NERVE.md","CHANGELOG.node.md","src/old.node.md"],"source_extensions":[".js"],"expected":{"missing_required":[],"source_files":[],"node_files":["src/old.node.md"],"missing_nodes":[],"orphan_nodes":["src/old.node.md"]}},
+    {"id":"root-changelog-not-orphan","files":["ARCH.md","NERVE.md","CHANGELOG.node.md"],"source_extensions":[".js"],"expected":{"missing_required":[],"source_files":[],"node_files":[],"missing_nodes":[],"orphan_nodes":[]}},
+    {"id":"required-artifact-loss","files":["ARCH.md","src/app.js","src/app.node.md"],"source_extensions":[".js"],"expected":{"missing_required":["NERVE.md","CHANGELOG.node.md"],"source_files":["src/app.js"],"node_files":["src/app.node.md"],"missing_nodes":[],"orphan_nodes":[]}}
+  ]
+}
