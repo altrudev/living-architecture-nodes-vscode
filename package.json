@@ -126,7 +126,7 @@
     }
   },
   "scripts": {
-    "self-check": "node scripts/self-check.js",
+    "self-check": "node scripts/self-check.js && node scripts/scanner-regression-check.js",
     "package": "vsce package"
   },
   "devDependencies": {}
