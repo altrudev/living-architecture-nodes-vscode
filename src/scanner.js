@@ -105,7 +105,7 @@ function companionNodePath(sourcePath) {
 
 function isRootNodeArtifact(nodePath) {
   const normalized = toPosix(nodePath);
-  return normalized === 'ARCH.node.md' || normalized === 'NERVE.node.md' || normalized === 'CHANGELOG.node.node.md';
+  return normalized === 'ARCH.node.md' || normalized === 'NERVE.node.md' || normalized === 'CHANGELOG.node.md';
 }
 
 function calculateHealth(counts) {
