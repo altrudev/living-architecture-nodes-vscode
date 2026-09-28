@@ -13,6 +13,7 @@ This is the controlled pre-release path toward the Living Architecture Nodes 0.2
 - Workspace path confinement for file writes and diagnostic exports.
 - Release-listing consistency checks.
 - Marketplace PNG icon.
+- Manual-only GitHub Actions trusted OIDC publishing workflow with no stored Marketplace PAT.
 
 ### Changed
 
@@ -27,6 +28,7 @@ This is the controlled pre-release path toward the Living Architecture Nodes 0.2
 - Symbolic-link path escape is rejected for protected read/write targets.
 - Mutation commands are blocked in Restricted Mode.
 - Production entitlement signing keys and Stripe secrets are not present in the extension.
+- Marketplace publishing uses a short-lived GitHub OIDC identity; the workflow is excluded from the VSIX and does not use a VSCE PAT secret.
 
 ### Commercial status
 
