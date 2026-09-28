@@ -6,7 +6,7 @@
   "support_source": "SUPPORT.md",
   "privacy_source": "PRIVACY.md",
   "current_stable_version": "0.1.0",
-  "pre_release_version": "0.1.1",
+  "pre_release_version": "0.1.2",
   "pre_release_publish_flag": "--pre-release",
   "stable_target_version": "0.2.0",
   "channel": "pre-release",

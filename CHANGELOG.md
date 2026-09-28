@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.2 — Pre-release
+
+Listing durability and release-channel cleanup.
+
+### Changed
+
+- Replaced stale version-specific Marketplace release copy with durable stable/pre-release channel wording.
+- Removed the hard-coded pre-release version from the Free/Pro/Team Marketplace section.
+- Moved exact version tracking to the changelog and release manifest.
+- Added a release gate that rejects stale version-specific Marketplace wording.
+
+### Verification
+
+- No runtime feature or entitlement behavior changed in this release.
+- Free core operation remains account-optional and local-first.
+- Paid Pro/Team capabilities remain disabled.
+- Stable promotion remains blocked until the existing production entitlement, billing, upgrade, and artifact gates pass.
+
 ## 0.1.1 — Pre-release
 
 This is the controlled pre-release path toward the Living Architecture Nodes 0.2.0 commercial product update.

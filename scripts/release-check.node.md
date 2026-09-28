@@ -24,7 +24,7 @@ The release check verifies that:
 
 ### Current stability state
 
-OIDC repository controls added for the 0.1.1/0.2.0 release path. Marketplace trust-policy registration remains externally pending.
+OIDC repository controls remain in place for the pre-release → stable release path. Marketplace trust-policy registration remains externally pending.
 
 ### Security notes
 
@@ -38,4 +38,5 @@ The check distinguishes repository configuration from external Marketplace trust
 - PAT secrets reappear.
 - Marketplace copy drifts from implemented behavior.
 - Version or tier semantics become stale.
+- Permanent Marketplace listing copy starts embedding current/next version numbers instead of delegating them to the changelog.
 - Stable release blockers disappear without evidence.

@@ -43,13 +43,13 @@ It is not responsible for:
 
 ### Current stability state
 
-0.1.1 pre-release candidate toward stable 0.2.0.
+0.1.2 pre-release candidate toward stable 0.2.0.
 
 ### Current commercial state
 
 - Marketplace label: Free.
 - Free core: no account required.
-- Paid entitlements: designed but not enabled in 0.1.1.
+- Paid entitlements: designed but not enabled in the current pre-release channel.
 - Stable 0.2.0 promotion remains blocked until production billing/entitlement and release gates pass.
 
 ### Current limitations

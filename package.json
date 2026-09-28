@@ -2,7 +2,7 @@
   "name": "living-architecture-nodes-vscode",
   "displayName": "Living Architecture Nodes",
   "description": "Keep codebase architecture memory current: detect missing or stale nodes, review drift, and export local AI/dev handoff context.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "altrudev",
   "author": {
     "name": "Valentyn Rukhaylo / Altru.dev"

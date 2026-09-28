@@ -21,11 +21,12 @@ This node is part of the official Living Architecture Nodes VS Code product surf
 
 ### Current stability state
 
-Pre-release candidate for 0.1.1 on the path to stable 0.2.0.
+Pre-release candidate for 0.1.2 on the path to stable 0.2.0.
 
 ### Recent mutations
 
 - 2026-09-28: Corrected the Marketplace pre-release version strategy, added complete listing metadata, Restricted Mode declaration, and machine-enforced release checks.
+- 2026-09-28: Removed version-specific release-channel copy from the Marketplace listing so the product page cannot become stale after each publication.
 
 ### Security notes
 

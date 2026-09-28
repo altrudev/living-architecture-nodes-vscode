@@ -30,7 +30,7 @@ function cmpVersion(a, b) {
 
 if (!/^\d+\.\d+\.\d+$/.test(pkg.version)) failures.push('Marketplace package version must be major.minor.patch with no prerelease suffix');
 if (pkg.version !== manifest.pre_release_version) failures.push('package version does not match listing pre-release version');
-if (manifest.channel !== 'pre-release') failures.push('listing manifest channel must be pre-release for 0.1.1');
+if (manifest.channel !== 'pre-release') failures.push('listing manifest channel must be pre-release');
 if (manifest.pre_release_publish_flag !== '--pre-release') failures.push('pre-release publishing flag is missing');
 if (cmpVersion(manifest.stable_target_version, pkg.version) <= 0) failures.push('stable target version must be greater than pre-release version');
 if (pkg.pricing !== manifest.pricing_label || pkg.pricing !== 'Free') failures.push('Marketplace pricing label must remain Free');
@@ -88,12 +88,30 @@ if (/secrets\.VSCE_PAT|VSCE_PAT\s*:/.test(workflow)) {
 }
 
 const readme = text('README.md');
-for (const phrase of ['Marketplace extension remains **Free**','Generated drafts are **not verified architecture truth**','NOT VERIFIED','no telemetry','Workspace Trust']) {
+for (const phrase of [
+  'Marketplace extension remains **Free**',
+  'Generated drafts are **not verified architecture truth**',
+  'NOT VERIFIED',
+  'no telemetry',
+  'Workspace Trust',
+  'stable channel',
+  'optional pre-release channel',
+  'See [CHANGELOG.md](CHANGELOG.md) for current versions and release details.'
+]) {
   if (!readme.includes(phrase)) failures.push(`README listing is missing required statement: ${phrase}`);
 }
 
+for (const pattern of [
+  /Current stable Marketplace release:/,
+  /Prepared pre-release:/,
+  /Target stable product release after all release gates pass:/,
+  /Paid capabilities are not enabled in the \d+\.\d+\.\d+ pre-release\./
+]) {
+  if (pattern.test(readme)) failures.push(`README contains stale version-specific Marketplace copy: ${pattern}`);
+}
+
 const changelog = text('CHANGELOG.md');
-if (!changelog.includes('## 0.1.1 — Pre-release')) failures.push('CHANGELOG.md is not synchronized to 0.1.1');
+if (!changelog.includes(`## ${pkg.version} — Pre-release`)) failures.push(`CHANGELOG.md is not synchronized to ${pkg.version}`);
 
 const icon = fs.existsSync(path.join(root,pkg.icon)) ? fs.readFileSync(path.join(root,pkg.icon)) : Buffer.alloc(0);
 if (icon.length < 8 || icon.toString('hex',0,8) !== '89504e470d0a1a0a') failures.push('Marketplace icon is not a valid PNG');
