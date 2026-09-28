@@ -1,27 +1,70 @@
 {
   "name": "living-architecture-nodes-vscode",
   "displayName": "Living Architecture Nodes",
-  "description": "VS Code extension for Living Architecture Nodes architecture-memory checks, node generation, and AI/dev handoff exports.",
-  "version": "0.2.0-pre.1",
+  "description": "Keep codebase architecture memory current: detect missing or stale nodes, review drift, and export local AI/dev handoff context.",
+  "version": "0.1.1",
   "publisher": "altrudev",
+  "author": {
+    "name": "Valentyn Rukhaylo / Altru.dev"
+  },
   "private": false,
   "pricing": "Free",
   "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://altru.dev/living-architecture-nodes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/altrudev/living-architecture-nodes-vscode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/altrudev/living-architecture-nodes-vscode/issues"
+  },
+  "qna": false,
+  "markdown": "github",
+  "icon": "media/lan-marketplace.png",
+  "galleryBanner": {
+    "color": "#0f172a",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.92.0"
   },
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Read-only architecture-memory scanning remains available. File generation and diagnostic exports require Workspace Trust.",
+      "restrictedConfigurations": [
+        "livingArchitectureNodes.sourceExtensions",
+        "livingArchitectureNodes.excludeGlobs",
+        "livingArchitectureNodes.exportPath"
+      ]
+    },
+    "virtualWorkspaces": {
+      "supported": false,
+      "description": "Living Architecture Nodes requires a workspace filesystem for architecture-memory scanning and local exports."
+    }
+  },
   "categories": [
-    "Other",
-    "Linters"
+    "Linters",
+    "Other"
   ],
   "keywords": [
     "software architecture",
+    "architecture memory",
+    "architecture drift",
     "AI assisted development",
+    "AI coding",
+    "codebase knowledge",
     "developer tools",
     "documentation",
     "diagnostics",
     "technical debt",
-    "architecture memory"
+    "dependency analysis",
+    "regression memory",
+    "repository maintenance",
+    "handoff"
   ],
   "activationEvents": [
     "onStartupFinished",
@@ -99,7 +142,7 @@
         },
         {
           "command": "livingArchitectureNodes.exportHandoffBundle",
-          "when": "view == livingArchitectureNodes.statusView",
+          "when": "view == livingArchitectureNodes.statusView && isWorkspaceTrusted",
           "group": "navigation"
         },
         {
@@ -111,7 +154,7 @@
       "view/item/context": [
         {
           "command": "livingArchitectureNodes.generateMissingNodes",
-          "when": "view == livingArchitectureNodes.statusView && viewItem == lanMissingNode",
+          "when": "view == livingArchitectureNodes.statusView && viewItem == lanMissingNode && isWorkspaceTrusted",
           "group": "inline"
         }
       ]
@@ -171,16 +214,17 @@
         "livingArchitectureNodes.exportPath": {
           "type": "string",
           "default": ".lan-vscode",
-          "description": "Workspace-relative folder for diagnostic exports."
+          "description": "Workspace-relative folder for diagnostic exports. Export paths are confined to the trusted workspace."
         }
       }
     }
   },
   "scripts": {
     "self-check": "node scripts/self-check.js",
+    "release:check": "node scripts/release-check.js",
     "test:product": "node --test test/*.test.js",
-    "test": "npm run self-check && npm run test:product",
-    "package": "vsce package"
+    "test": "npm run self-check && npm run release:check && npm run test:product",
+    "package": "npx --yes @vscode/vsce package"
   },
   "devDependencies": {}
 }
