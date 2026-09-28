@@ -11,11 +11,11 @@
 - Quick links to `ARCH.md`, `NERVE.md`, and `CHANGELOG.node.md`
 - Local AI/dev handoff export bundle
 
-## Controlled pre-release — 0.1.1
+## Current pre-release — 0.1.2
 
-Purpose: validate the commercial product boundary and release path without prematurely enabling paid capabilities.
+Purpose: continue validating the commercial product boundary and release path without prematurely enabling paid capabilities. Version 0.1.1 was the first published controlled pre-release; 0.1.2 synchronizes the Marketplace listing and release state.
 
-- Marketplace listing refresh
+- Marketplace listing/release-state correction
 - Privacy/support/licensing refresh
 - Free-tier product status boundary
 - Workspace Trust limited-mode support
