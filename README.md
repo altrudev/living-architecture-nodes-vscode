@@ -24,7 +24,7 @@ The Marketplace extension remains **Free** and the core local workflow does not 
 
 The commercial product model supports deeper optional Pro and Team capabilities such as semantic architectural drift, impact analysis, regression correlation, signed verification receipts, historical comparison, shared policy, and cross-repository analysis.
 
-**Paid capabilities are not enabled in the 0.1.1 pre-release.** Until production entitlement services are activated, the extension safely operates as Free.
+**Paid capabilities are not enabled in the current pre-release channel.** Until production entitlement services are activated, the extension safely operates as Free.
 
 If a deeper check is unavailable because it was not executed, the correct status is:
 
@@ -96,15 +96,13 @@ Future paid entitlement checks are designed to exchange account/product entitlem
 
 See [PRIVACY.md](PRIVACY.md).
 
-## Version and release channel
+## Release channel
 
-- Current stable Marketplace release: **0.1.0**
-- Prepared pre-release: **0.1.1**
-- Target stable product release after all release gates pass: **0.2.0**
+Living Architecture Nodes has a **stable channel** and an **optional pre-release channel**.
 
-The pre-release is intended to validate upgrade behavior, workspace security, listing presentation, and the commercial entitlement boundary before stable promotion.
+The pre-release channel is used to validate new product, security, entitlement, and upgrade behavior before those changes are promoted to stable.
 
-See [CHANGELOG.md](CHANGELOG.md).
+See [CHANGELOG.md](CHANGELOG.md) for current versions and release details.
 
 ## Support and licensing
 
