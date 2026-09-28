@@ -29,13 +29,14 @@ Tracks cascade risk and release-sensitive coupling across the Living Architectur
 
 ### 2026-09-28 release hardening
 
-- Corrected Marketplace channel versioning to 0.1.1 pre-release → 0.2.0 stable.
+- Established the controlled Marketplace pre-release → stable promotion path.
 - Added complete listing metadata and Resources.
 - Added Workspace Trust limited-mode declaration.
 - Bound mutations to trusted workspaces.
 - Added canonical workspace path authority and tests.
 - Added privacy/support/public licensing documents.
 - Added listing/release manifest and deterministic gate.
+- Removed current/next version numbers from permanent Marketplace listing copy; exact versions now live in release metadata and changelog.
 - Added trusted GitHub OIDC publishing workflow with a separate verification job and narrowly scoped `id-token: write` publish job.
 - Stable 0.2.0 remains blocked until production monetization and artifact gates pass.
 

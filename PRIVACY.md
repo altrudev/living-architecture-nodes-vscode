@@ -23,7 +23,7 @@ The product architecture supports optional paid entitlements. When activated, en
 
 Repository source and architecture-memory contents are not required for entitlement validation.
 
-Production paid entitlements are not enabled in the 0.1.1 pre-release.
+Production paid entitlements are not enabled in the current pre-release channel.
 
 ## Secret storage
 
