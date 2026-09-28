@@ -39,7 +39,14 @@ if (manifest.pre_release_publish_allowed !== false) failures.push('pre-release p
 if (!Array.isArray(manifest.pre_release_blockers) || manifest.pre_release_blockers.length === 0) failures.push('pre-release publication blocker must be recorded');
 if (manifest.stable_publish_allowed !== false) failures.push('stable publishing must remain blocked at this stage');
 
-for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','LICENSE','media/lan-marketplace.png']) requireFile(rel);
+if (manifest.publishing_auth_strategy !== 'github-oidc') failures.push('Marketplace publishing auth strategy must be github-oidc');
+if (manifest.trusted_publishing?.provider !== 'github-actions') failures.push('trusted publishing provider must be github-actions');
+if (manifest.trusted_publishing?.repository !== 'altrudev/living-architecture-nodes-vscode') failures.push('trusted publishing repository identity drifted');
+if (manifest.trusted_publishing?.workflow !== '.github/workflows/publish-marketplace.yml') failures.push('trusted publishing workflow identity drifted');
+if (manifest.trusted_publishing?.audience !== 'marketplace.visualstudio.com') failures.push('trusted publishing OIDC audience drifted');
+if (typeof manifest.trusted_publishing?.policy_configured !== 'boolean') failures.push('trusted publishing policy_configured must be explicit');
+
+for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','LICENSE','media/lan-marketplace.png','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
 
 if (pkg.icon !== 'media/lan-marketplace.png') failures.push('Marketplace icon must use the PNG release icon');
 if (!pkg.homepage || !pkg.repository?.url || !pkg.bugs?.url) failures.push('Marketplace Resources links are incomplete');
@@ -51,6 +58,32 @@ if (!exportMenu?.when?.includes('isWorkspaceTrusted')) failures.push('export com
 const itemMenus = pkg.contributes?.menus?.['view/item/context'] || [];
 const generateMenu = itemMenus.find((x) => x.command === 'livingArchitectureNodes.generateMissingNodes');
 if (!generateMenu?.when?.includes('isWorkspaceTrusted')) failures.push('node generation command is not hidden in Restricted Mode');
+
+const workflow = text('.github/workflows/publish-marketplace.yml');
+for (const phrase of [
+  'workflow_dispatch:',
+  'id-token: write',
+  'persist-credentials: false',
+  'publish --oidc --packagePath',
+  'actions/checkout@11d5960a326750d5838078e36cf38b85af677262',
+  'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',
+  'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
+  'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093'
+]) {
+  if (!workflow.includes(phrase)) failures.push(`trusted publishing workflow missing required control: ${phrase}`);
+}
+
+if (/^\s*push:/m.test(workflow) || /^\s*pull_request:/m.test(workflow) || /^\s*release:/m.test(workflow)) {
+  failures.push('Marketplace publishing workflow must remain manual-only');
+}
+
+if ((workflow.match(/id-token:\s*write/g) || []).length !== 1) {
+  failures.push('id-token: write must exist only in the publish job');
+}
+
+if (/secrets\.VSCE_PAT|VSCE_PAT\s*:/.test(workflow)) {
+  failures.push('Marketplace publishing workflow must not use a VSCE PAT secret');
+}
 
 const readme = text('README.md');
 for (const phrase of ['Marketplace extension remains **Free**','Generated drafts are **not verified architecture truth**','NOT VERIFIED','no telemetry','Workspace Trust']) {
@@ -88,4 +121,6 @@ if (!manifest.pre_release_publish_allowed) console.log(`Publish blocker: ${manif
 console.log(`Stable target: ${manifest.stable_target_version} (blocked until production gates pass)`);
 console.log('Pricing label: Free');
 console.log('Marketplace listing/docs/privacy/license: synchronized');
+console.log('Publishing auth: GitHub Actions trusted OIDC');
+console.log(`Trusted publishing policy: ${manifest.trusted_publishing.policy_configured ? 'CONFIGURED' : 'PENDING'}`);
 console.log('Workspace Trust: limited; mutations require trust');
