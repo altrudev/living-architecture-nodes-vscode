@@ -24,7 +24,7 @@ The Marketplace extension remains **Free** and the core local workflow does not 
 
 The commercial product model supports deeper optional Pro and Team capabilities such as semantic architectural drift, impact analysis, regression correlation, signed verification receipts, historical comparison, shared policy, and cross-repository analysis.
 
-**Paid capabilities are not enabled in the 0.1.1 pre-release.** Until production entitlement services are activated, the extension safely operates as Free.
+**Paid capabilities are not enabled in the 0.1.2 pre-release.** Until production entitlement services are activated, the extension safely operates as Free.
 
 If a deeper check is unavailable because it was not executed, the correct status is:
 
@@ -98,11 +98,11 @@ See [PRIVACY.md](PRIVACY.md).
 
 ## Version and release channel
 
-- Current stable Marketplace release: **0.1.0**
-- Prepared pre-release: **0.1.1**
-- Target stable product release after all release gates pass: **0.2.0**
+- Stable Marketplace channel: **0.1.0**
+- Current pre-release channel: **0.1.2**
+- Planned stable product release after the remaining production gates pass: **0.2.0**
 
-The pre-release is intended to validate upgrade behavior, workspace security, listing presentation, and the commercial entitlement boundary before stable promotion.
+The pre-release channel is where LAN validates upgrade behavior, workspace security, listing presentation, and the commercial entitlement boundary before those changes are promoted to stable. Version **0.1.1** was the first controlled pre-release; **0.1.2** corrects and synchronizes the Marketplace listing/release state without enabling paid capabilities.
 
 See [CHANGELOG.md](CHANGELOG.md).
 
