@@ -4,80 +4,39 @@
 
 ### Purpose
 
-Tracks public and internal development direction for the VS Code extension.
+Tracks the public development and release direction for the Living Architecture Nodes VS Code product.
 
 ### Responsibility boundary
 
-This node documents the architectural role of `PRODUCT_ROADMAP.md` inside the Living Architecture Nodes VS Code extension.
-
-This file is responsible for its direct implementation concern only. It should not silently absorb unrelated product behavior, licensing policy, publishing workflow, or remote service behavior without updating the affected nodes and `ARCH.md`.
-
-### Dependencies
-
-Depends on adjacent extension modules, VS Code extension packaging behavior, and the Living Architecture Nodes project conventions where relevant.
-
-### Dependents
-
-The extension runtime, local diagnostic workflow, package self-check, and future Marketplace/publishing steps may depend on this file remaining aligned with its node memory.
+The roadmap describes LAN-specific product evolution only. It does not expose private implementation, payment secrets, or unrelated research systems.
 
 ### Contracts
 
-Expected inputs:
-
-- Workspace state, configuration, project files, or package metadata as applicable.
-
-Expected outputs:
-
-- Deterministic local behavior aligned with the Living Architecture Nodes protocol.
-
-Side effects:
-
-- None beyond the explicit role of `PRODUCT_ROADMAP.md`. File-writing behavior must remain user-confirmed where applicable.
+- Free core remains useful without an account.
+- Paid capabilities add verification depth rather than changing evidence truth.
+- 0.1.1 is a controlled pre-release.
+- 0.2.0 stable is blocked until monetization, artifact, listing, and upgrade gates pass.
 
 ## Dynamic layer
 
 ### Current stability state
 
-Stable for v0.1.0 initial package.
+Synchronized with the 2026-09-28 0.1.1 pre-release candidate.
 
 ### Recent mutations
 
-- 2026-06-03T14:56:24.595492Z: Created initial implementation and companion node.
+- Replaced the stale generic v0.2 candidate list with the actual pre-release → stable promotion path.
+- Added explicit stable-release blockers.
+- Aligned future capability direction with the standalone Living Architecture Nodes commercial purpose.
 
-### Known fragile points
+## Security notes
 
-- Behavior should stay compatible with the GitHub Action and public specification where file naming and health concepts overlap.
-- Any change to scan or generation behavior may affect user trust because node files are architecture memory.
-
-### Interaction warnings
-
-Update related nodes, `ARCH.md`, `NERVE.md`, and `CHANGELOG.node.md` when changing this file in a way that affects commands, file writes, scan output, export format, or user-visible behavior.
-
-### Performance observations
-
-No known degradation conditions yet. Large workspaces may require exclusion tuning.
-
-### Security notes
-
-Maintain local-first behavior. Do not introduce telemetry, remote code execution, hidden analytics, or unconfirmed file modifications.
+The roadmap must not contain signing keys, credentials, private repository names, or customer-specific details.
 
 ## Diagnostic layer
 
-### Past bug patterns
-
-None recorded yet.
-
-### Near misses
-
-None recorded yet.
-
 ### Regression triggers
 
-- Changing companion path conventions
-- Changing output formats without updating documentation
-- Adding hidden network behavior
-- Adding write behavior without explicit confirmation
-
-### Suspected hidden coupling
-
-This file may be coupled to extension command registration, scan report shape, and expected public Living Architecture Nodes terminology.
+- Roadmap claims capabilities that are not implemented.
+- Stable release blockers disappear before verification.
+- Free/paid semantics diverge from the product constitution and listing.
