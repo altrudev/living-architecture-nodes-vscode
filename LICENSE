@@ -1,22 +1,43 @@
-Living Architecture Nodes VS Code Extension Source-Visible License v0.1
+Living Architecture Nodes VS Code Extension Source-Visible Product License v0.2
 
-Copyright (c) 2026 Valentyn Rukhaylo / Altru.dev
+Copyright (c) 2026 Valentyn Rukhaylo / Altru.dev. All rights reserved.
 
-Permission is granted to view, download, and use this repository for evaluation,
-installation, personal/internal development workflow, and compatibility testing
-with the official Living Architecture Nodes VS Code extension.
+1. OFFICIAL PRODUCT USE
 
-You may not sell, sublicense, repackage, rebrand, distribute modified versions,
-or use this code to operate a competing commercial product or service without
-written permission from Valentyn Rukhaylo / Altru.dev.
+You may install and use the official Living Architecture Nodes VS Code extension for personal, educational, professional, and internal business development workflows, subject to the product tier and entitlement made available to you.
 
-The Living Architecture Nodes name and related branding are not granted under
-this license. See TRADEMARK.md for brand-use guidance.
+The Free tier may be used without payment for the capabilities designated as Free by the official product.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Paid capabilities, if and when activated, require a valid paid entitlement under the applicable subscription or commercial terms.
+
+2. SOURCE VISIBILITY
+
+You may view and inspect this repository for security review, compatibility review, evaluation, learning, and contribution discussion.
+
+This source-visible license is not an open-source license.
+
+3. RESTRICTIONS
+
+Without prior written permission from Valentyn Rukhaylo / Altru.dev, you may not:
+
+- sell, sublicense, repackage, rebrand, or redistribute modified versions of the official extension;
+- use this implementation or substantial portions of it to operate a competing commercial product or hosted service;
+- remove or bypass entitlement enforcement for paid capabilities;
+- misrepresent an unofficial implementation as the official Living Architecture Nodes product;
+- use Living Architecture Nodes branding in a way that implies sponsorship, certification, or endorsement where none exists.
+
+4. USER ARTIFACTS
+
+This license does not claim ownership of a user's source code, repository content, architecture-memory files, or diagnostic exports merely because they are processed or generated through the extension.
+
+5. SEPARATE PUBLIC SPECIFICATION
+
+The public Living Architecture Nodes protocol/specification may be distributed separately under different terms, including an open-source license. Those terms do not automatically apply to this official product implementation.
+
+6. TRADEMARK
+
+Living Architecture Nodes™ and related source-identifying branding are not granted under this software license. See TRADEMARK.md for brand-use guidance.
+
+7. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE AUTHORS AND COPYRIGHT HOLDERS ARE NOT LIABLE FOR CLAIMS, DAMAGES, OR OTHER LIABILITY ARISING FROM USE OF THE SOFTWARE.
