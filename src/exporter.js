@@ -2,15 +2,21 @@
 
 const fs = require('fs/promises');
 const path = require('path');
+const { version } = require('../package.json');
 const { redactObject } = require('./redactor');
+const { resolveAuthorizedWorkspacePath } = require('./product/workspace-authority');
 
 async function exportDiagnostics(rootPath, report, options = {}) {
-  const exportDir = path.join(rootPath, options.exportPath || '.lan-vscode');
+  if (options.workspaceTrusted !== true) {
+    throw new Error('Workspace Trust is required for diagnostic export.');
+  }
+
+  const exportDir = await resolveAuthorizedWorkspacePath(rootPath, options.exportPath || '.lan-vscode');
   await fs.mkdir(exportDir, { recursive: true });
 
   const sanitized = redactObject({
     tool: 'Living Architecture Nodes VS Code Extension',
-    version: '0.1.0',
+    version,
     report
   });
 
