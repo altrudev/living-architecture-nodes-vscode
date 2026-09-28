@@ -6,7 +6,7 @@
   "support_source": "SUPPORT.md",
   "privacy_source": "PRIVACY.md",
   "current_stable_version": "0.1.0",
-  "pre_release_version": "0.1.1",
+  "pre_release_version": "0.1.2",
   "pre_release_publish_flag": "--pre-release",
   "stable_target_version": "0.2.0",
   "channel": "pre-release",
@@ -22,8 +22,9 @@
   },
   "pre_release_publish_allowed": false,
   "pre_release_blockers": [
-    "Register the Visual Studio Marketplace trusted publishing policy for altrudev/living-architecture-nodes-vscode and .github/workflows/publish-marketplace.yml",
-    "Verify the first GitHub OIDC token exchange before enabling automated publication"
+    "Publish the verified 0.1.2 VSIX to the Visual Studio Marketplace pre-release channel",
+    "Verify the live Marketplace page renders the synchronized 0.1.2 listing state",
+    "Register and verify the Visual Studio Marketplace trusted publishing policy before automated OIDC publication"
   ],
   "stable_publish_allowed": false,
   "stable_blockers": [
@@ -40,5 +41,8 @@
     "homepage": "https://altru.dev/living-architecture-nodes",
     "repository": "https://github.com/altrudev/living-architecture-nodes-vscode.git",
     "issues": "https://github.com/altrudev/living-architecture-nodes-vscode/issues"
-  }
+  },
+  "previous_pre_release_version": "0.1.1",
+  "pre_release_publication_verified": false,
+  "listing_state_correction": true
 }
