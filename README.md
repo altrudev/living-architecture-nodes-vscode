@@ -1,26 +1,56 @@
 # Living Architecture Nodes for VS Code
 
-Official VS Code extension for **Living Architecture Nodes** architecture-memory checks, node generation, and AI/dev handoff exports.
+**Keep codebase architecture memory current before humans or AI change the code.**
 
-Living Architecture Nodes is a repository nervous-system protocol for AI-assisted software maintenance. This extension brings the protocol into the editor so maintainers can see missing node files, dirty architecture memory, required artifacts, and exportable diagnostic context before changes reach CI.
+Living Architecture Nodes is a local-first maintenance protocol for keeping module intent, dependencies, drift, regression memory, and AI/dev handoff context alongside the code that changes.
 
-## Features
+## What the extension does
 
-- Scan the current workspace for Living Architecture Nodes artifacts
-- Show architecture-memory health score in the VS Code sidebar
-- Detect missing `.node.md` companion files
-- Detect dirty/stale node files when source files are newer than their companions
-- Detect orphan node files
-- Generate missing `.node.md` files from a structured template
-- Open `ARCH.md`, `NERVE.md`, and `CHANGELOG.node.md` quickly
-- Export AI/dev handoff bundles as JSON and Markdown
-- Local-first operation with no telemetry
+- scans the current workspace for Living Architecture Nodes artifacts;
+- shows architecture-memory health in the VS Code sidebar;
+- detects missing `.node.md` companion files;
+- detects stale/dirty node memory when source files move ahead of their companions;
+- detects orphan node files;
+- creates missing node files as **generated drafts** after explicit confirmation;
+- opens `ARCH.md`, `NERVE.md`, and `CHANGELOG.node.md`;
+- exports local JSON and Markdown handoff bundles;
+- keeps core operation local with **no telemetry**.
+
+Generated drafts are **not verified architecture truth**. They must be populated, reviewed, and verified separately.
+
+## Free, Pro, and Team
+
+The Marketplace extension remains **Free** and the core local workflow does not require an account.
+
+The commercial product model supports deeper optional Pro and Team capabilities such as semantic architectural drift, impact analysis, regression correlation, signed verification receipts, historical comparison, shared policy, and cross-repository analysis.
+
+**Paid capabilities are not enabled in the 0.1.1 pre-release.** Until production entitlement services are activated, the extension safely operates as Free.
+
+If a deeper check is unavailable because it was not executed, the correct status is:
+
+```text
+NOT VERIFIED
+```
+
+That does not mean failed or unsafe.
+
+## Restricted Mode / Workspace Trust
+
+Read-only architecture-memory scanning remains available in Restricted Mode.
+
+Operations that modify the workspace require Workspace Trust:
+
+- generating `.node.md` drafts;
+- writing diagnostic export bundles.
+
+Write and export destinations are confined to the active workspace and reject path traversal or symbolic-link escape.
 
 ## Commands
 
 - `Living Architecture Nodes: Scan Workspace`
 - `Living Architecture Nodes: Generate Missing Node Files`
 - `Living Architecture Nodes: Export AI/Dev Handoff Bundle`
+- `Living Architecture Nodes: Show Product Status`
 - `Living Architecture Nodes: Open ARCH.md`
 - `Living Architecture Nodes: Open NERVE.md`
 - `Living Architecture Nodes: Open CHANGELOG.node.md`
@@ -37,33 +67,55 @@ CHANGELOG.node.md
 diagnostic export interface
 ```
 
-## Extension workflow
+## Typical workflow
 
-1. Open a workspace folder.
-2. Open the Living Architecture Nodes sidebar.
+1. Open a workspace.
+2. Open the **Living Architecture Nodes** sidebar.
 3. Run **Scan Workspace**.
-4. Generate missing node files if needed.
-5. Review dirty/stale node warnings before editing code.
-6. Export the AI/dev handoff bundle when you need diagnostic context.
+4. Review missing, stale, or orphan architecture memory.
+5. In a trusted workspace, create missing node drafts when useful.
+6. Populate and review drafts before treating them as architecture truth.
+7. Export a local handoff bundle when another human or AI system needs diagnostic context.
 
 ## Output
 
-Diagnostic exports are written to `.lan-vscode/` by default:
+Diagnostic exports are written locally to `.lan-vscode/` by default:
 
 ```text
 .lan-vscode/living-architecture-diagnostic.json
 .lan-vscode/living-architecture-diagnostic.md
 ```
 
+The export path must remain inside the trusted workspace.
+
 ## Privacy
 
-This extension is local-first. It reads your workspace files and writes local diagnostic exports. It does not send code, diagnostics, telemetry, secrets, or repository content to a remote service.
+The extension reads workspace files needed for local analysis and writes only explicit local artifacts. Core Free operation does not send source code, architecture memory, diagnostics, secrets, repository content, or behavioral telemetry to a remote service.
 
-## Related links
+Future paid entitlement checks are designed to exchange account/product entitlement metadata only—not repository contents.
 
-- Spec page: https://altru.dev/living-architecture-nodes
-- Specification repo: https://github.com/altrudev/living-architecture-nodes
+See [PRIVACY.md](PRIVACY.md).
+
+## Version and release channel
+
+- Current stable Marketplace release: **0.1.0**
+- Prepared pre-release: **0.1.1**
+- Target stable product release after all release gates pass: **0.2.0**
+
+The pre-release is intended to validate upgrade behavior, workspace security, listing presentation, and the commercial entitlement boundary before stable promotion.
+
+See [CHANGELOG.md](CHANGELOG.md).
+
+## Support and licensing
+
+- Product page: https://altru.dev/living-architecture-nodes
+- Specification: https://github.com/altrudev/living-architecture-nodes
 - GitHub Action: https://github.com/altrudev/living-architecture-nodes-action
+- Issues/support: https://github.com/altrudev/living-architecture-nodes-vscode/issues
+- Support policy: [SUPPORT.md](SUPPORT.md)
+- License: [LICENSE](LICENSE)
+
+Living Architecture Nodes™ is a separate product from other Altru.dev research and development systems.
 
 Developed by Altru.dev — Code For Humanity.
 
