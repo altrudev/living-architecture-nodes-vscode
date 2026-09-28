@@ -3,6 +3,7 @@
 const vscode = require('vscode');
 const fs = require('fs/promises');
 const path = require('path');
+const { resolveAuthorizedWorkspacePath } = require('./product/workspace-authority');
 
 function ensureWorkspaceFolder() {
   const folders = vscode.workspace.workspaceFolders;
@@ -16,8 +17,8 @@ function ensureWorkspaceFolder() {
 async function openWorkspaceFile(relativePath) {
   const folder = ensureWorkspaceFolder();
   if (!folder) return;
-  const absPath = path.join(folder.uri.fsPath, relativePath);
   try {
+    const absPath = await resolveAuthorizedWorkspacePath(folder.uri.fsPath, relativePath, { mustExist: true });
     const doc = await vscode.workspace.openTextDocument(absPath);
     await vscode.window.showTextDocument(doc, { preview: false });
   } catch (error) {
@@ -28,7 +29,9 @@ async function openWorkspaceFile(relativePath) {
 async function writeWorkspaceFile(relativePath, content, options = {}) {
   const folder = ensureWorkspaceFolder();
   if (!folder) throw new Error('No workspace folder open.');
-  const absPath = path.join(folder.uri.fsPath, relativePath);
+  if (!vscode.workspace.isTrusted) throw new Error('Workspace Trust is required for file mutation.');
+
+  const absPath = await resolveAuthorizedWorkspacePath(folder.uri.fsPath, relativePath);
   await fs.mkdir(path.dirname(absPath), { recursive: true });
   if (options.failIfExists && await fileExists(absPath)) return false;
   await fs.writeFile(absPath, content, 'utf8');
@@ -93,7 +96,7 @@ function minimatchLite(relativePath, glob) {
     return rel.includes(`/${part}/`) || rel.startsWith(`${part}/`);
   }
   if (normalizedGlob.includes('*')) {
-    const escaped = normalizedGlob.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*\*/g, '.*').replace(/\*/g, '[^/]*');
+    const escaped = normalizedGlob.replace(/[.+^$\{\}()|[\]\\]/g, '\\$&').replace(/\*\*/g, '.*').replace(/\*/g, '[^/]*');
     return new RegExp(`^${escaped}$`).test(rel);
   }
   return rel === normalizedGlob || rel.startsWith(`${normalizedGlob}/`);
