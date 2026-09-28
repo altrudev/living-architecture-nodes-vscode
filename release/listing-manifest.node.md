@@ -16,16 +16,22 @@ The trusted identity is bound to:
 - workflow: `.github/workflows/publish-marketplace.yml`
 - audience: `marketplace.visualstudio.com`
 
-No Marketplace PAT is part of the intended release path.
+No Marketplace PAT is part of the intended automated release path.
 
 ## Dynamic layer
 
 ### Current stability state
 
-The repository-side OIDC workflow is defined, but the Marketplace trusted-publisher policy is still pending.
+- Stable Marketplace channel: `0.1.0`
+- Previously published pre-release: `0.1.1`
+- Current prepared listing-correction pre-release: `0.1.2`
+- Stable target: `0.2.0`
+- Paid entitlements: disabled
+- Trusted OIDC Marketplace policy: still pending external configuration
 
 ### Current blockers
 
+- Publish and verify the 0.1.2 pre-release listing correction.
 - Register the exact GitHub repository/workflow trust policy in Visual Studio Marketplace.
 - Verify a successful first OIDC token exchange.
 - Stable 0.2.0 retains all product, billing, upgrade, and artifact blockers.
@@ -40,7 +46,8 @@ A failed OIDC exchange must fail closed; it must not fall back to PAT authentica
 
 ### Regression triggers
 
+- README says 0.1.1 is merely prepared after it was published.
+- Package, manifest, changelog, roadmap, and listing versions diverge.
 - Publishing auth strategy changes away from `github-oidc` without review.
-- Trusted repository/workflow identity drifts.
 - A long-lived Marketplace secret is introduced.
-- Publication gates become true without verification evidence.
+- Stable blockers disappear without verification evidence.
