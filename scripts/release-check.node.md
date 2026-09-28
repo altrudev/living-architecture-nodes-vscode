@@ -4,38 +4,38 @@
 
 ### Purpose
 
-Validates Marketplace metadata, listing copy, privacy/license synchronization, trust declarations, version ordering, PNG icon, and stable-release blocking.
+Validates Marketplace metadata, listing copy, privacy/license synchronization, Workspace Trust declarations, version ordering, trusted OIDC publishing identity, workflow authority, PNG icon, and stable-release blocking.
 
-### Responsibility boundary
+### OIDC publishing checks
 
-This node is part of the official Living Architecture Nodes VS Code product surface. It must remain aligned with the public product purpose and must not absorb unrelated runtime, payment-provider, or private research implementation.
+The release check verifies that:
 
-### Contracts
-
-- Local-first behavior.
-- Free core operation does not require an account.
-- Write-capable behavior requires explicit user action and Workspace Trust.
-- Unexecuted deeper checks are NOT VERIFIED, not failed.
+- Marketplace auth strategy is `github-oidc`;
+- trusted repository is `altrudev/living-architecture-nodes-vscode`;
+- trusted workflow is `.github/workflows/publish-marketplace.yml`;
+- OIDC audience is `marketplace.visualstudio.com`;
+- publishing remains manual-only;
+- only the publish job receives `id-token: write`;
+- checkout/setup/upload/download actions are pinned to exact commits;
+- no `secrets.VSCE_PAT` path exists;
+- the workflow publishes the exact verified VSIX with `--oidc --packagePath`.
 
 ## Dynamic layer
 
 ### Current stability state
 
-Pre-release candidate for 0.1.1 on the path to stable 0.2.0.
-
-### Recent mutations
-
-- 2026-09-28: Added a deterministic listing/release gate that fails stale or unsafe public product metadata.
+OIDC repository controls added for the 0.1.1/0.2.0 release path. Marketplace trust-policy registration remains externally pending.
 
 ### Security notes
 
-Do not introduce hidden telemetry, repository-content upload, private signing keys, payment secrets, or workspace escape.
-
-## Diagnostic layer
+The check distinguishes repository configuration from external Marketplace trust-policy state. It must not report OIDC fully configured merely because the YAML exists.
 
 ### Regression triggers
 
-- Marketplace copy drifting from implemented behavior.
-- Version or tier semantics becoming stale.
-- Trust/path controls weakening.
-- Generated drafts being represented as verified architecture truth.
+- Automatic push/tag publishing appears.
+- OIDC authority expands beyond the publish job.
+- Trusted repository/workflow/audience changes.
+- PAT secrets reappear.
+- Marketplace copy drifts from implemented behavior.
+- Version or tier semantics become stale.
+- Stable release blockers disappear without evidence.
