@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "extension_id": "altrudev.living-architecture-nodes-vscode",
+  "listing_source": "README.md",
+  "changelog_source": "CHANGELOG.md",
+  "support_source": "SUPPORT.md",
+  "privacy_source": "PRIVACY.md",
+  "current_stable_version": "0.1.0",
+  "pre_release_version": "0.1.1",
+  "pre_release_publish_flag": "--pre-release",
+  "stable_target_version": "0.2.0",
+  "channel": "pre-release",
+  "pricing_label": "Free",
+  "paid_entitlements_enabled": false,
+  "stable_publish_allowed": false,
+  "stable_blockers": [
+    "production entitlement service deployed",
+    "production entitlement public verification key embedded and verified",
+    "Stripe Pro/Team products and prices approved",
+    "checkout, customer portal, and webhook flow verified",
+    "Marketplace pre-release installation and upgrade path verified",
+    "actual VSIX artifact leak/security audit passed",
+    "public docs/listing/pricing/privacy/license synchronized"
+  ],
+  "required_marketplace_resources": {
+    "homepage": "https://altru.dev/living-architecture-nodes",
+    "repository": "https://github.com/altrudev/living-architecture-nodes-vscode.git",
+    "issues": "https://github.com/altrudev/living-architecture-nodes-vscode/issues"
+  }
+}
