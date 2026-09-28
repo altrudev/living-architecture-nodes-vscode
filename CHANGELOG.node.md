@@ -1,5 +1,15 @@
 # CHANGELOG.node.md
 
+## 2026-09-28 — 0.1.2 Marketplace listing correction
+
+### Changed
+
+- Corrected the live Marketplace version wording after 0.1.1 was successfully published.
+- Advanced the pre-release package/listing source to 0.1.2.
+- Synchronized README, package, release manifest, changelog, roadmap, and node records.
+- Added release-gate assertions that reject the stale "Prepared pre-release: 0.1.1" wording.
+- Paid capabilities remain disabled and stable 0.2.0 remains blocked.
+
 ## 2026-09-28 — 0.1.1 controlled pre-release foundation
 
 ### Changed
