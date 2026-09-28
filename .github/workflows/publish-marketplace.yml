@@ -1,0 +1,199 @@
+name: Marketplace Trusted Publish
+
+run-name: "Marketplace publish ${{ inputs.version }} (${{ inputs.channel }})"
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish; must exactly match package.json"
+        required: true
+        type: string
+      channel:
+        description: "Marketplace channel"
+        required: true
+        type: choice
+        default: pre-release
+        options:
+          - pre-release
+          - stable
+      publish:
+        description: "Actually publish after verification"
+        required: true
+        type: boolean
+        default: false
+      confirmation:
+        description: "When publish=true, type PUBLISH"
+        required: false
+        type: string
+
+concurrency:
+  group: vscode-marketplace-publish
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Frequency verify and package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      vsix_name: ${{ steps.meta.outputs.vsix_name }}
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+          cache: ""
+
+      - name: Verify dispatch authority and release gates
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+          REQUESTED_CHANNEL: ${{ inputs.channel }}
+          PUBLISH_REQUESTED: ${{ inputs.publish }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          GITHUB_REF_VALUE: ${{ github.ref }}
+        run: |
+          node <<'NODE'
+          const pkg = require('./package.json');
+          const manifest = require('./release/listing-manifest.json');
+
+          const fail = (message) => {
+            console.error(`::error::${message}`);
+            process.exit(1);
+          };
+
+          if (process.env.GITHUB_REF_VALUE !== 'refs/heads/main') {
+            fail('Marketplace publishing is allowed only from main.');
+          }
+
+          if (process.env.REQUESTED_VERSION !== pkg.version) {
+            fail(`Requested version ${process.env.REQUESTED_VERSION} does not match package.json ${pkg.version}.`);
+          }
+
+          const channel = process.env.REQUESTED_CHANNEL;
+          if (!['pre-release', 'stable'].includes(channel)) fail('Invalid release channel.');
+
+          const publish = process.env.PUBLISH_REQUESTED === 'true';
+          if (publish && process.env.CONFIRMATION !== 'PUBLISH') {
+            fail('Publishing requires confirmation input PUBLISH.');
+          }
+
+          if (publish && channel === 'pre-release' && manifest.pre_release_publish_allowed !== true) {
+            fail(`Pre-release publication is blocked: ${(manifest.pre_release_blockers || []).join('; ')}`);
+          }
+
+          if (publish && channel === 'stable' && manifest.stable_publish_allowed !== true) {
+            fail(`Stable publication is blocked: ${(manifest.stable_blockers || []).join('; ')}`);
+          }
+
+          if (manifest.publishing_auth_strategy !== 'github-oidc') {
+            fail('Release manifest does not require GitHub OIDC publishing.');
+          }
+
+          console.log('Dispatch authority: VERIFIED');
+          console.log(`Version: ${pkg.version}`);
+          console.log(`Channel: ${channel}`);
+          console.log(`Publish requested: ${publish}`);
+          NODE
+
+      - name: Run LAN release and product tests
+        run: npm test
+
+      - name: Build exact VSIX candidate
+        id: meta
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+          REQUESTED_CHANNEL: ${{ inputs.channel }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          vsix_name="living-architecture-nodes-${REQUESTED_VERSION}.vsix"
+          args=(package -o "dist/${vsix_name}")
+          if [ "${REQUESTED_CHANNEL}" = "pre-release" ]; then
+            args+=(--pre-release)
+          fi
+          npx --yes @vscode/vsce@4.0.0 "${args[@]}"
+          echo "vsix_name=${vsix_name}" >> "$GITHUB_OUTPUT"
+
+      - name: Inspect packaged VSIX
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+          REQUESTED_CHANNEL: ${{ inputs.channel }}
+        run: |
+          set -euo pipefail
+          vsix="dist/living-architecture-nodes-${REQUESTED_VERSION}.vsix"
+          work="$(mktemp -d)"
+          unzip -q "$vsix" -d "$work"
+
+          grep -q "Version=\"${REQUESTED_VERSION}\"" "$work/extension.vsixmanifest"
+          grep -q 'Microsoft.VisualStudio.Services.Content.Pricing" Value="Free"' "$work/extension.vsixmanifest"
+
+          if [ "${REQUESTED_CHANNEL}" = "pre-release" ]; then
+            grep -q 'Microsoft.VisualStudio.Code.PreRelease" Value="true"' "$work/extension.vsixmanifest"
+          else
+            if grep -q 'Microsoft.VisualStudio.Code.PreRelease" Value="true"' "$work/extension.vsixmanifest"; then
+              echo "::error::Stable package unexpectedly contains PreRelease=true"
+              exit 1
+            fi
+          fi
+
+          if grep -RInE 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sk_live_[A-Za-z0-9]+|VSCE_PAT|Frequency-Dev|Living-Architecture-Nodes-Product' "$work"; then
+            echo "::error::Forbidden private/credential material found in VSIX"
+            exit 1
+          fi
+
+          if grep -RInE 'https?://' "$work/extension/src"; then
+            echo "::error::Unexpected runtime network literal found in extension source"
+            exit 1
+          fi
+
+          sha256sum "$vsix" | tee "dist/${REQUESTED_VERSION}.sha256"
+          echo "VSIX artifact inspection: VERIFIED"
+
+      - name: Upload verified candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: marketplace-vsix-${{ inputs.version }}
+          path: |
+            dist/living-architecture-nodes-${{ inputs.version }}.vsix
+            dist/${{ inputs.version }}.sha256
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish with trusted OIDC
+    needs: verify
+    if: ${{ inputs.publish }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download verified candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: marketplace-vsix-${{ inputs.version }}
+          path: dist
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+          cache: ""
+
+      - name: Verify candidate digest
+        working-directory: dist
+        run: sha256sum -c "${{ inputs.version }}.sha256"
+
+      - name: Publish exact verified VSIX through Marketplace OIDC
+        env:
+          VSIX: dist/living-architecture-nodes-${{ inputs.version }}.vsix
+        run: |
+          set -euo pipefail
+          npx --yes @vscode/vsce@4.0.0 publish --oidc --packagePath "$VSIX"
