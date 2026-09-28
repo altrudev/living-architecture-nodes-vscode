@@ -46,8 +46,10 @@ if (manifest.trusted_publishing?.workflow !== '.github/workflows/publish-marketp
 if (manifest.trusted_publishing?.audience !== 'marketplace.visualstudio.com') failures.push('trusted publishing OIDC audience drifted');
 if (typeof manifest.trusted_publishing?.policy_configured !== 'boolean') failures.push('trusted publishing policy_configured must be explicit');
 
-for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','LICENSE','media/lan-marketplace.png','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
+for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','LICENSE','media/lan-marketplace.png','.vscodeignore','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
 
+const vscodeIgnore = text('.vscodeignore');
+if (!vscodeIgnore.split(/\r?\n/).includes('.github/**')) failures.push('.github/** must be excluded from the published VSIX');
 if (pkg.icon !== 'media/lan-marketplace.png') failures.push('Marketplace icon must use the PNG release icon');
 if (!pkg.homepage || !pkg.repository?.url || !pkg.bugs?.url) failures.push('Marketplace Resources links are incomplete');
 if (pkg.capabilities?.untrustedWorkspaces?.supported !== 'limited') failures.push('Workspace Trust listing must declare limited support');
