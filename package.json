@@ -2,9 +2,10 @@
   "name": "living-architecture-nodes-vscode",
   "displayName": "Living Architecture Nodes",
   "description": "VS Code extension for Living Architecture Nodes architecture-memory checks, node generation, and AI/dev handoff exports.",
-  "version": "0.1.0",
+  "version": "0.2.0-pre.1",
   "publisher": "altrudev",
   "private": false,
+  "pricing": "Free",
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "vscode": "^1.92.0"
@@ -30,7 +31,8 @@
     "onCommand:livingArchitectureNodes.exportHandoffBundle",
     "onCommand:livingArchitectureNodes.openARCH",
     "onCommand:livingArchitectureNodes.openNERVE",
-    "onCommand:livingArchitectureNodes.openChangelog"
+    "onCommand:livingArchitectureNodes.openChangelog",
+    "onCommand:livingArchitectureNodes.showProductStatus"
   ],
   "main": "./src/extension.js",
   "contributes": {
@@ -81,6 +83,11 @@
         "command": "livingArchitectureNodes.openChangelog",
         "title": "Living Architecture Nodes: Open CHANGELOG.node.md",
         "icon": "$(history)"
+      },
+      {
+        "command": "livingArchitectureNodes.showProductStatus",
+        "title": "Living Architecture Nodes: Show Product Status",
+        "icon": "$(shield)"
       }
     ],
     "menus": {
@@ -92,6 +99,11 @@
         },
         {
           "command": "livingArchitectureNodes.exportHandoffBundle",
+          "when": "view == livingArchitectureNodes.statusView",
+          "group": "navigation"
+        },
+        {
+          "command": "livingArchitectureNodes.showProductStatus",
           "when": "view == livingArchitectureNodes.statusView",
           "group": "navigation"
         }
@@ -109,12 +121,51 @@
       "properties": {
         "livingArchitectureNodes.sourceExtensions": {
           "type": "array",
-          "default": [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".py", ".cs", ".java", ".go", ".rs", ".php", ".rb", ".swift", ".kt", ".kts", ".vue", ".svelte", ".html", ".css", ".yml", ".yaml"],
+          "default": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx",
+            ".mjs",
+            ".cjs",
+            ".py",
+            ".cs",
+            ".java",
+            ".go",
+            ".rs",
+            ".php",
+            ".rb",
+            ".swift",
+            ".kt",
+            ".kts",
+            ".vue",
+            ".svelte",
+            ".html",
+            ".css",
+            ".yml",
+            ".yaml"
+          ],
           "description": "Source file extensions that should have companion .node.md files."
         },
         "livingArchitectureNodes.excludeGlobs": {
           "type": "array",
-          "default": ["**/.git/**", "**/node_modules/**", "**/dist/**", "**/build/**", "**/out/**", "**/coverage/**", "**/.next/**", "**/.nuxt/**", "**/.turbo/**", "**/.cache/**", "**/vendor/**", "**/.venv/**", "**/venv/**", "**/__pycache__/**", "**/.lan-vscode/**"],
+          "default": [
+            "**/.git/**",
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/out/**",
+            "**/coverage/**",
+            "**/.next/**",
+            "**/.nuxt/**",
+            "**/.turbo/**",
+            "**/.cache/**",
+            "**/vendor/**",
+            "**/.venv/**",
+            "**/venv/**",
+            "**/__pycache__/**",
+            "**/.lan-vscode/**"
+          ],
           "description": "Glob patterns excluded from scanning."
         },
         "livingArchitectureNodes.exportPath": {
@@ -127,6 +178,8 @@
   },
   "scripts": {
     "self-check": "node scripts/self-check.js",
+    "test:product": "node --test test/*.test.js",
+    "test": "npm run self-check && npm run test:product",
     "package": "vsce package"
   },
   "devDependencies": {}
