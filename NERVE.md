@@ -6,96 +6,58 @@ NERVE is used here as a descriptive abbreviation for Node Evidence & Regression 
 
 ### Purpose
 
-This file aggregates health, cascade-risk, dirty-state, and diagnostic observations for the Living Architecture Nodes VS Code extension.
-
-### Responsibility boundary
-
-This hub tracks the relationship between extension modules, user-facing commands, filesystem writes, and diagnostic export behavior.
-
-### Dependencies
-
-- `ARCH.md`
-- `CHANGELOG.node.md`
-- module-level `.node.md` files
-- source modules in `src/`
-
-### Contracts
-
-Inputs:
-
-- Node-file states
-- Source-module changes
-- Diagnostic observations
-
-Outputs:
-
-- Prioritized investigation order
-- Dirty flag notes
-- Cascade risk map
-
-## Dynamic layer
-
-### Current health score
-
-100/100 at package creation self-check.
-
-### Dirty flags
-
-None at initial package creation.
+Tracks cascade risk and release-sensitive coupling across the Living Architecture Nodes VS Code product.
 
 ### Cascade map
 
-- `src/scanner.js` affects status tree, exports, node generation decisions, and health scoring.
-- `src/workspace.js` affects all file open/write/scan operations.
-- `src/templates.js` affects generated `.node.md` quality.
-- `src/exporter.js` affects AI/dev handoff bundles.
-- `package.json` affects activation, commands, Marketplace metadata, and UI contribution points.
+- `src/scanner.js` → health/status, missing/dirty/orphan findings.
+- `src/workspace.js` → workspace file access and mutation.
+- `src/product/workspace-authority.js` → canonical workspace boundary for protected paths.
+- `src/exporter.js` → local diagnostic bundle creation.
+- `src/product/entitlement.js` → Free fallback and signed paid-entitlement consumption.
+- `package.json` → Marketplace identity, commands, Resources, pricing label, trust declaration.
+- `README.md` → Marketplace listing body.
+- `CHANGELOG.md` → Marketplace release history.
+- `release/listing-manifest.json` + `scripts/release-check.js` → release/listing synchronization and stable-publish blocker.
 
-### Cross-node pattern detection
+## Dynamic layer
 
-No recurring bug classes recorded yet.
+### Current health target
 
-### Temporal pattern log
+100/100 architecture-memory self-check before promotion.
 
-- 2026-06-03: Initial VS Code extension built after successful GitHub Action v0.1.1 validation.
+### 2026-09-28 release hardening
 
-### Troubleshooting playbooks
+- Corrected Marketplace channel versioning to 0.1.1 pre-release → 0.2.0 stable.
+- Added complete listing metadata and Resources.
+- Added Workspace Trust limited-mode declaration.
+- Bound mutations to trusted workspaces.
+- Added canonical workspace path authority and tests.
+- Added privacy/support/public licensing documents.
+- Added listing/release manifest and deterministic gate.
+- Stable 0.2.0 remains blocked until production monetization and artifact gates pass.
 
-If scanning fails:
+### Troubleshooting order
 
-1. Review `src/workspace.js`.
-2. Review exclusion settings.
-3. Review `src/scanner.js` companion path logic.
+If packaging/listing fails:
+1. Run `npm test`.
+2. Review `scripts/release-check.js`.
+3. Compare `package.json` against `release/listing-manifest.json`.
+4. Verify README/CHANGELOG/PRIVACY/SUPPORT/LICENSE.
+5. Build and inspect the actual VSIX.
 
-If node generation fails:
-
-1. Review `src/templates.js`.
-2. Review `src/workspace.js` write behavior.
-3. Confirm user confirmation flow in `src/extension.js`.
-
-If exports look wrong:
-
-1. Review `src/exporter.js`.
-2. Review `src/redactor.js`.
-3. Review report structure from `src/scanner.js`.
+If mutation/export security fails:
+1. Review `src/product/workspace-authority.js`.
+2. Review `src/workspace.js`.
+3. Review `src/exporter.js`.
+4. Confirm `isWorkspaceTrusted` gates in package menus and runtime.
 
 ## Diagnostic layer
 
-### Past bug patterns
-
-None recorded yet.
-
-### Near misses
-
-None recorded yet.
-
 ### Regression triggers
 
-- Changing companion mapping rules
-- Changing activation events
-- Changing source extension defaults
-- Adding automatic writes without confirmation
-
-### Suspected hidden coupling
-
-The extension and GitHub Action should maintain compatible health concepts and node path mapping.
+- Publishing without the pre-release flag.
+- Using a SemVer prerelease suffix unsupported by Marketplace channel practice.
+- Stale listing or changelog.
+- Paid tier affecting evidence truth.
+- Private keys, payment secrets, or private product code appearing in the VSIX.

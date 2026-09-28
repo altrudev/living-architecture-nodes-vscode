@@ -1,10 +1,10 @@
-# Node: package.json
+# Node: PRIVACY.md
 
 ## Static layer
 
 ### Purpose
 
-Defines Marketplace identity, metadata, commands, configuration, trust declarations, pricing label, Resources links, and release scripts.
+Defines the public local-first privacy contract for Free and future paid entitlement operation.
 
 ### Responsibility boundary
 
@@ -25,7 +25,7 @@ Pre-release candidate for 0.1.1 on the path to stable 0.2.0.
 
 ### Recent mutations
 
-- 2026-09-28: Corrected the Marketplace pre-release version strategy, added complete listing metadata, Restricted Mode declaration, and machine-enforced release checks.
+- 2026-09-28: Added explicit no-content/no-telemetry default and future entitlement metadata boundary.
 
 ### Security notes
 

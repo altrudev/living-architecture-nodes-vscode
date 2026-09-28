@@ -2,6 +2,7 @@
 
 const vscode = require('vscode');
 const path = require('path');
+const { version: extensionVersion } = require('../package.json');
 const { scanWorkspace } = require('./scanner');
 const { createNodeTemplate } = require('./templates');
 const { exportDiagnostics } = require('./exporter');
@@ -31,7 +32,7 @@ function activate(context) {
   context.subscriptions.push(vscode.commands.registerCommand('livingArchitectureNodes.showProductStatus', async () => {
     await refreshEntitlement();
     const suffix = currentEntitlement.reason ? ` — paid entitlement unavailable: ${currentEntitlement.reason}` : '';
-    vscode.window.showInformationMessage(`Living Architecture Nodes: ${currentEntitlement.tier.toUpperCase()} tier${suffix}`);
+    vscode.window.showInformationMessage(`Living Architecture Nodes ${extensionVersion}: ${currentEntitlement.tier.toUpperCase()} tier${suffix}`);
   }));
   context.subscriptions.push(vscode.commands.registerCommand('livingArchitectureNodes.openARCH', async () => openWorkspaceFile('ARCH.md')));
   context.subscriptions.push(vscode.commands.registerCommand('livingArchitectureNodes.openNERVE', async () => openWorkspaceFile('NERVE.md')));
@@ -70,7 +71,16 @@ async function runScan(options = {}) {
   return report;
 }
 
+async function requireTrustedMutation(action) {
+  if (vscode.workspace.isTrusted) return true;
+  await vscode.window.showWarningMessage(
+    `Living Architecture Nodes: ${action} requires Workspace Trust. Read-only scanning remains available in Restricted Mode.`
+  );
+  return false;
+}
+
 async function generateMissingNodes(item) {
+  if (!await requireTrustedMutation('creating node drafts')) return;
   const workspaceFolder = ensureWorkspaceFolder();
   if (!workspaceFolder) return;
   const report = lastReport || await runScan({ showInfo: false });
@@ -93,23 +103,29 @@ async function generateMissingNodes(item) {
     const content = createNodeTemplate({
       sourcePath: entry.sourcePath,
       nodePath: entry.nodePath,
-      generatedBy: 'Living Architecture Nodes VS Code Extension v0.2.0-pre.1'
+      generatedBy: `Living Architecture Nodes VS Code Extension v${extensionVersion}`
     });
-    await writeWorkspaceFile(entry.nodePath, content, { failIfExists: true });
-    created += 1;
+    const wrote = await writeWorkspaceFile(entry.nodePath, content, { failIfExists: true });
+    if (wrote) created += 1;
   }
 
-  vscode.window.showInformationMessage(`Created ${created} Living Architecture Node draft file(s). Generated drafts are not verified architecture truth.`);
+  vscode.window.showInformationMessage(
+    `Created ${created} Living Architecture Node draft file(s). Generated drafts are not verified architecture truth.`
+  );
   await runScan({ showInfo: false });
 }
 
 async function exportBundle() {
+  if (!await requireTrustedMutation('exporting diagnostics')) return;
   const workspaceFolder = ensureWorkspaceFolder();
   if (!workspaceFolder) return;
   const report = lastReport || await runScan({ showInfo: false });
   const config = vscode.workspace.getConfiguration('livingArchitectureNodes');
   const exportPath = config.get('exportPath') || '.lan-vscode';
-  const result = await exportDiagnostics(workspaceFolder.uri.fsPath, report, { exportPath });
+  const result = await exportDiagnostics(workspaceFolder.uri.fsPath, report, {
+    exportPath,
+    workspaceTrusted: vscode.workspace.isTrusted
+  });
   const open = await vscode.window.showInformationMessage(
     `Living Architecture Nodes export created: ${normalizeRelativePath(result.markdownPath)}`,
     'Open Summary',

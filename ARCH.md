@@ -4,89 +4,67 @@
 
 ### Intent
 
-Living Architecture Nodes for VS Code is designed to bring architecture-memory checks into the developer editor. It lets maintainers scan a workspace, identify missing or stale `.node.md` companion files, generate structured node templates, open core protocol artifacts, and export AI/dev diagnostic handoff bundles locally.
+Living Architecture Nodes for VS Code keeps architecture memory close to the code it describes. It scans a workspace, identifies missing/stale/orphan node memory, creates user-confirmed node drafts, opens protocol artifacts, and exports local diagnostic handoff bundles.
 
-### Responsibility boundary
+### Product boundary
 
-The extension is responsible for local workspace inspection, node generation, architecture-memory status display, and diagnostic export.
+The extension is the official editor surface for Living Architecture Nodes.
 
-It is not responsible for remote telemetry, cloud synchronization, paid licensing enforcement, AI code generation, source-code modification beyond explicit user-confirmed node-file creation, or replacing tests/security review.
+It is responsible for:
+- local architecture-memory scanning and status;
+- local draft generation after explicit confirmation;
+- local diagnostic export;
+- public Free-tier product status and future signed entitlement consumption.
+
+It is not responsible for:
+- payment processing;
+- issuing paid entitlements;
+- remote source-code analysis by default;
+- arbitrary shell/remote execution;
+- hidden telemetry;
+- treating generated drafts as verified architecture truth.
+
+### Trust and authority
+
+- Read-only scanning may operate in Restricted Mode.
+- Workspace mutation and diagnostic export require Workspace Trust.
+- Read/write/export paths are canonicalized and confined to the active workspace.
+- Path traversal, absolute external targets, and symbolic-link escape are rejected.
 
 ### Dependencies
 
 - VS Code Extension API
 - Node.js runtime provided by VS Code
 - Local workspace filesystem
-- Living Architecture Nodes file structure
-
-### Contracts
-
-Inputs:
-
-- Open VS Code workspace folder
-- Workspace files and optional existing Living Architecture Nodes artifacts
-- Extension configuration values
-
-Outputs:
-
-- Sidebar architecture-memory status
-- Generated `.node.md` files after explicit confirmation
-- Local `.lan-vscode/` diagnostic export bundle
-
-Side effects:
-
-- Reads workspace files
-- Writes `.node.md` files only after user confirmation
-- Writes diagnostic exports locally
+- Living Architecture Nodes public file conventions
+- Stable signed-entitlement contract (consumer side only)
 
 ## Dynamic layer
 
 ### Current stability state
 
-Under active change — initial product build v0.1.0.
+0.1.1 pre-release candidate toward stable 0.2.0.
 
-### Recent mutations
+### Current commercial state
 
-- 2026-06-03: Created fresh VS Code extension package.
-- 2026-06-03: Implemented workspace scan, missing node generation, dirty-node detection, and diagnostic export.
+- Marketplace label: Free.
+- Free core: no account required.
+- Paid entitlements: designed but not enabled in 0.1.1.
+- Stable 0.2.0 promotion remains blocked until production billing/entitlement and release gates pass.
 
-### Known fragile points
+### Current limitations
 
-- Dirty detection currently uses modification timestamps, not full Git history.
-- Source extension defaults include workflow files, so workflow files may need node companions.
-- The UI is intentionally minimal for the first version.
-
-### Interaction warnings
-
-- Changing companion path rules affects compatibility with the GitHub Action and public spec examples.
-- Adding new source extensions can increase missing-node reports.
-- Export output must avoid leaking secrets or unrelated private content.
-
-### Performance observations
-
-The scanner is expected to be lightweight for small and medium repositories. Large monorepos should tune excluded folders.
-
-### Security notes
-
-Local-first design. No telemetry. Diagnostic export uses redaction patterns for common secrets, but users should still review exports before sharing externally.
+- Dirty-node detection still uses modification-time evidence rather than semantic drift.
+- Multi-root workspaces currently use the first workspace root.
+- Virtual workspaces are not supported.
+- Pro/Team features are not active in the pre-release.
 
 ## Diagnostic layer
 
-### Past bug patterns
-
-None recorded yet.
-
-### Near misses
-
-None recorded yet.
-
 ### Regression triggers
 
-- VS Code API changes
-- Companion path rule changes
-- Workspace scanning exclusions becoming too broad or too narrow
-- Auto-generation writing files without explicit user confirmation
-
-### Suspected hidden coupling
-
-The extension behavior is coupled to the Living Architecture Nodes GitHub Action conventions and public spec file naming.
+- Workspace write/export escaping the active root.
+- Mutation becoming available in untrusted workspaces.
+- Marketplace listing claiming paid capabilities that are not active.
+- Free operation becoming account-dependent.
+- Hard-coded extension versions drifting from package metadata.

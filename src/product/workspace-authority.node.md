@@ -1,10 +1,10 @@
-# Node: package.json
+# Node: src/product/workspace-authority.js
 
 ## Static layer
 
 ### Purpose
 
-Defines Marketplace identity, metadata, commands, configuration, trust declarations, pricing label, Resources links, and release scripts.
+Provides the public extension canonical workspace path boundary for protected reads, writes, and exports.
 
 ### Responsibility boundary
 
@@ -25,7 +25,7 @@ Pre-release candidate for 0.1.1 on the path to stable 0.2.0.
 
 ### Recent mutations
 
-- 2026-09-28: Corrected the Marketplace pre-release version strategy, added complete listing metadata, Restricted Mode declaration, and machine-enforced release checks.
+- 2026-09-28: Added traversal, absolute-path, resolved-target, and symbolic-link escape rejection.
 
 ### Security notes
 
