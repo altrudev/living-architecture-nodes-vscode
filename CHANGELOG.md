@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.2 — Pre-release
+
+Marketplace listing/release-state correction.
+
+### Changed
+
+- Updated the Marketplace listing to describe 0.1.1 as the first published pre-release rather than a merely prepared release.
+- Set the current pre-release channel to 0.1.2 while keeping 0.1.0 as the stable channel.
+- Synchronized package, release manifest, roadmap, changelog, and architecture-memory records.
+- Kept paid Pro/Team capabilities disabled; Free core behavior is unchanged.
+
+### Release purpose
+
+This pre-release corrects listing/version state and revalidates the existing security, privacy, Workspace Trust, packaging, and entitlement boundaries before stable 0.2.0 promotion.
+
 ## 0.1.1 — Pre-release
 
 This is the controlled pre-release path toward the Living Architecture Nodes 0.2.0 commercial product update.
