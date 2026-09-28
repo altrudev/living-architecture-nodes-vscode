@@ -12,9 +12,18 @@
   "channel": "pre-release",
   "pricing_label": "Free",
   "paid_entitlements_enabled": false,
+  "publishing_auth_strategy": "github-oidc",
+  "trusted_publishing": {
+    "provider": "github-actions",
+    "repository": "altrudev/living-architecture-nodes-vscode",
+    "workflow": ".github/workflows/publish-marketplace.yml",
+    "audience": "marketplace.visualstudio.com",
+    "policy_configured": false
+  },
   "pre_release_publish_allowed": false,
   "pre_release_blockers": [
-    "Visual Studio Marketplace publisher authentication is not currently authorized (TF400813)"
+    "Register the Visual Studio Marketplace trusted publishing policy for altrudev/living-architecture-nodes-vscode and .github/workflows/publish-marketplace.yml",
+    "Verify the first GitHub OIDC token exchange before enabling automated publication"
   ],
   "stable_publish_allowed": false,
   "stable_blockers": [
@@ -22,8 +31,7 @@
     "production entitlement public verification key embedded and verified",
     "Stripe Pro/Team products and prices approved",
     "checkout, customer portal, and webhook flow verified",
-    "Marketplace publisher authentication restored and verified",
-    "Marketplace publishing authentication migration to Microsoft Entra ID planned before December 1, 2026",
+    "Visual Studio Marketplace trusted publishing policy configured and OIDC exchange verified",
     "Marketplace pre-release installation and upgrade path verified",
     "actual VSIX artifact leak/security audit passed",
     "public docs/listing/pricing/privacy/license synchronized"
