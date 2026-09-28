@@ -7,6 +7,7 @@
 - Corrected Marketplace release channel strategy: 0.1.1 pre-release precedes 0.2.0 stable.
 - Added complete Marketplace metadata, Resources, privacy, support, and public product licensing.
 - Added machine-readable listing manifest and deterministic release gate.
+- Added manual-only trusted OIDC Marketplace publishing with exact workflow/repository identity and no stored Marketplace PAT.
 - Added Workspace Trust limited-mode behavior and hid mutation commands in Restricted Mode.
 - Added canonical workspace path authority for protected reads/writes/exports.
 - Added workspace traversal/absolute-path/symbolic-link escape tests.
@@ -32,6 +33,7 @@
 - `release/listing-manifest.node.md`
 - `PRIVACY.node.md`
 - `SUPPORT.node.md`
+- `.github/workflows/publish-marketplace.node.md`
 
 ## 2026-06-03 — v0.1.0 initial VS Code package
 
