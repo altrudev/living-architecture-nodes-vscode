@@ -18,7 +18,8 @@ Tracks cascade risk and release-sensitive coupling across the Living Architectur
 - `package.json` → Marketplace identity, commands, Resources, pricing label, trust declaration.
 - `README.md` → Marketplace listing body.
 - `CHANGELOG.md` → Marketplace release history.
-- `release/listing-manifest.json` + `scripts/release-check.js` → release/listing synchronization and stable-publish blocker.
+- `release/listing-manifest.json` + `scripts/release-check.js` → release/listing synchronization, trusted publishing identity, and stable-publish blocker.
+- `.github/workflows/publish-marketplace.yml` → manual-only verified-VSIX publishing through GitHub OIDC.
 
 ## Dynamic layer
 
@@ -35,6 +36,7 @@ Tracks cascade risk and release-sensitive coupling across the Living Architectur
 - Added canonical workspace path authority and tests.
 - Added privacy/support/public licensing documents.
 - Added listing/release manifest and deterministic gate.
+- Added trusted GitHub OIDC publishing workflow with a separate verification job and narrowly scoped `id-token: write` publish job.
 - Stable 0.2.0 remains blocked until production monetization and artifact gates pass.
 
 ### Troubleshooting order
@@ -57,6 +59,8 @@ If mutation/export security fails:
 ### Regression triggers
 
 - Publishing without the pre-release flag.
+- Marketplace publishing from a non-main ref or automatic push/tag trigger.
+- OIDC authority spreading outside the dedicated publish job.
 - Using a SemVer prerelease suffix unsupported by Marketplace channel practice.
 - Stale listing or changelog.
 - Paid tier affecting evidence truth.
