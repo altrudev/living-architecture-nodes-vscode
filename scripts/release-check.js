@@ -35,6 +35,8 @@ if (manifest.pre_release_publish_flag !== '--pre-release') failures.push('pre-re
 if (cmpVersion(manifest.stable_target_version, pkg.version) <= 0) failures.push('stable target version must be greater than pre-release version');
 if (pkg.pricing !== manifest.pricing_label || pkg.pricing !== 'Free') failures.push('Marketplace pricing label must remain Free');
 if (manifest.paid_entitlements_enabled !== false) failures.push('paid entitlements must remain disabled until production service is verified');
+if (manifest.pre_release_publish_allowed !== false) failures.push('pre-release publishing must remain blocked while Marketplace authentication is unavailable');
+if (!Array.isArray(manifest.pre_release_blockers) || manifest.pre_release_blockers.length === 0) failures.push('pre-release publication blocker must be recorded');
 if (manifest.stable_publish_allowed !== false) failures.push('stable publishing must remain blocked at this stage');
 
 for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','LICENSE','media/lan-marketplace.png']) requireFile(rel);
@@ -80,7 +82,9 @@ if (failures.length) {
 
 console.log('LAN Marketplace release check: VERIFIED');
 console.log(`Extension ID: ${manifest.extension_id}`);
-console.log(`Pre-release: ${pkg.version} ${manifest.pre_release_publish_flag}`);
+console.log(`Pre-release artifact: ${pkg.version} ${manifest.pre_release_publish_flag}`);
+console.log(`Marketplace publish gate: ${manifest.pre_release_publish_allowed ? 'READY' : 'BLOCKED'}`);
+if (!manifest.pre_release_publish_allowed) console.log(`Publish blocker: ${manifest.pre_release_blockers.join('; ')}`);
 console.log(`Stable target: ${manifest.stable_target_version} (blocked until production gates pass)`);
 console.log('Pricing label: Free');
 console.log('Marketplace listing/docs/privacy/license: synchronized');
