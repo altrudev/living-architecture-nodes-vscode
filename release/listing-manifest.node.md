@@ -4,38 +4,40 @@
 
 ### Purpose
 
-Machine-readable source of truth for Marketplace channel, version, pricing, resource links, and stable-release blockers.
-
-### Responsibility boundary
-
-This node is part of the official Living Architecture Nodes VS Code product surface. It must remain aligned with the public product purpose and must not absorb unrelated runtime, payment-provider, or private research implementation.
+Machine-readable source of truth for Marketplace channel, version, pricing, resource links, publication readiness, and stable-release blockers.
 
 ### Contracts
 
-- Local-first behavior.
-- Free core operation does not require an account.
-- Write-capable behavior requires explicit user action and Workspace Trust.
-- Unexecuted deeper checks are NOT VERIFIED, not failed.
+- 0.1.1 is a pre-release artifact and must use `--pre-release`.
+- Free core remains account-optional.
+- Paid entitlements remain disabled until production service verification.
+- Publication readiness is distinct from artifact verification.
+- Stable 0.2.0 promotion remains blocked until every listed external/product gate is verified.
 
 ## Dynamic layer
 
 ### Current stability state
 
-Pre-release candidate for 0.1.1 on the path to stable 0.2.0.
+Artifact/listing candidate is verified, but Marketplace publication is externally blocked.
+
+### Current blocker
+
+- 2026-09-28: `vsce verify-pat altrudev` returned `TF400813`; the current publisher credential is not authorized.
 
 ### Recent mutations
 
-- 2026-09-28: Established 0.1.1 pre-release → 0.2.0 stable promotion rules and blocked stable publication until production monetization gates pass.
+- Added an explicit pre-release publication gate.
+- Added Marketplace authentication restoration as a stable blocker.
+- Added migration planning away from global PAT authentication before the December 1, 2026 retirement date.
 
-### Security notes
+## Security notes
 
-Do not introduce hidden telemetry, repository-content upload, private signing keys, payment secrets, or workspace escape.
+Never bypass publisher authentication, embed Marketplace credentials in the repository, or treat an artifact-level pass as proof that publication occurred.
 
 ## Diagnostic layer
 
 ### Regression triggers
 
-- Marketplace copy drifting from implemented behavior.
-- Version or tier semantics becoming stale.
-- Trust/path controls weakening.
-- Generated drafts being represented as verified architecture truth.
+- Publishing state reported as ready while external authentication is blocked.
+- Credentials added to source control.
+- Stable blockers removed without evidence.
