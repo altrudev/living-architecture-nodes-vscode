@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.1.3 — Pre-release
+
+Local-first economics and commercial-boundary synchronization.
+
+### Changed
+
+- Made Free / Pro / Team execution economics explicit: subscriptions unlock capabilities, not scan credits.
+- Declared ordinary local scans unmetered by LAN.
+- Declared entitlement refresh out-of-band rather than per-check.
+- Declared remote compute production-disabled and prohibited silent remote fallback.
+- Preserved the existing client-data/security hardening and Free/Pro/Team activation gates.
+
+### Verification
+
+- Paid production remains disabled.
+- Paid prices remain unpublished.
+- Free remains account-optional and local-first.
+- Remote compute remains disabled.
+
 ## 0.1.2 — Pre-release
 
 Listing durability and release-channel cleanup.

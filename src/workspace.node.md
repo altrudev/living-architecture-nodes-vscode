@@ -14,7 +14,7 @@ Handles VS Code workspace access while delegating all protected file writes to t
 
 ## Current state
 
-Client-data/security hardening baseline for pre-release 0.1.2.
+Client-data/security hardening baseline for pre-release 0.1.3.
 
 ## Regression triggers
 

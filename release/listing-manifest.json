@@ -6,7 +6,7 @@
   "support_source": "SUPPORT.md",
   "privacy_source": "PRIVACY.md",
   "current_stable_version": "0.1.0",
-  "pre_release_version": "0.1.2",
+  "pre_release_version": "0.1.3",
   "pre_release_publish_flag": "--pre-release",
   "stable_target_version": "0.2.0",
   "channel": "pre-release",
@@ -80,6 +80,13 @@
     "paid_prices_published": false,
     "enterprise_issuable": false,
     "public_tier_contract": "PRODUCT-TIERS.md",
-    "unavailable_paid_check_status": "NOT_VERIFIED"
+    "unavailable_paid_check_status": "NOT_VERIFIED",
+    "subscription_unit": "capability-authority",
+    "ordinary_scans_metered": false,
+    "usage_quota_required_for_local_checks": false,
+    "local_compute_default": true,
+    "entitlement_refresh_per_check": false,
+    "remote_compute_production_enabled": false,
+    "remote_compute_silent_fallback_allowed": false
   }
 }

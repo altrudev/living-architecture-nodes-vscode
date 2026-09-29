@@ -12,7 +12,7 @@ It operates on strings recursively inside the controlled diagnostic report struc
 
 ## Current state
 
-Expanded for the 0.1.2 client-data hardening pass.
+Expanded for the 0.1.3 client-data hardening pass.
 
 ## Security boundary
 

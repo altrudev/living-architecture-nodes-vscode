@@ -19,7 +19,7 @@ Defines the public self-security and client-data handling boundary for the offic
 
 ## Current state
 
-Frequency-verified 0.1.2 client-data/security baseline.
+Frequency-verified 0.1.3 client-data/security baseline.
 
 ## Regression triggers
 

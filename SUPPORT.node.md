@@ -21,7 +21,7 @@ This node is part of the official Living Architecture Nodes VS Code product surf
 
 ### Current stability state
 
-Pre-release candidate for 0.1.2 on the path to stable 0.2.0.
+Pre-release candidate for 0.1.3 on the path to stable 0.2.0.
 
 ### Recent mutations
 

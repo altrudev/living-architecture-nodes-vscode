@@ -11,7 +11,7 @@
 - Quick links to `ARCH.md`, `NERVE.md`, and `CHANGELOG.node.md`
 - Local AI/dev handoff export bundle
 
-## Controlled pre-release — 0.1.2
+## Controlled pre-release — 0.1.3
 
 Purpose: validate the commercial product boundary and release path without prematurely enabling paid capabilities.
 
@@ -38,6 +38,13 @@ The product tier contract is **Free / Pro / Team**.
 - A paid tier increases available verification depth; it must never fabricate a better or worse verification outcome.
 
 Paid activation remains blocked until approved pricing, Stripe configuration, signed-entitlement verification, customer terms, cancellation/downgrade behavior, privacy/security alignment, and final release verification all pass.
+
+
+## Local-first economics invariant
+
+Current Free/Pro/Team capabilities are local-first. Subscriptions unlock capability authority rather than scan quotas. Ordinary local scans are not LAN-metered, entitlement refresh is not per-check, and remote compute remains production-disabled.
+
+Any future remote compute must be introduced as a separately governed capability with explicit authorization, bounded data scope/cost, and Frequency verification.
 
 ## Stable target — 0.2.0
 

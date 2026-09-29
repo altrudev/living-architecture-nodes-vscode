@@ -30,6 +30,8 @@ Current paid capability direction includes semantic architectural drift, impact 
 
 See [PRODUCT-TIERS.md](PRODUCT-TIERS.md) for the public tier contract.
 
+**Ordinary local scans are not metered by LAN.** A paid subscription unlocks capabilities; it is not a bundle of scan credits. Current Free/Pro/Team checks are designed to execute locally, and entitlement refresh is not required for every scan. Remote compute is not production-enabled.
+
 If a deeper check is unavailable because it was not executed, the correct status is:
 
 ```text

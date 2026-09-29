@@ -15,7 +15,7 @@ Defines Marketplace identity, commands, trust declarations, release scripts, and
 
 ## Current state
 
-Pre-release 0.1.2 with locked release tooling.
+Pre-release 0.1.3 with locked release tooling.
 
 ## Regression triggers
 

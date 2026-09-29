@@ -16,7 +16,7 @@ Provides the canonical workspace authority and secure write primitive for protec
 
 ## Current state
 
-Client-data/security hardening baseline for pre-release 0.1.2.
+Client-data/security hardening baseline for pre-release 0.1.3.
 
 ## Regression triggers
 
