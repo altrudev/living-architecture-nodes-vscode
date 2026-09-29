@@ -40,3 +40,8 @@ The check distinguishes repository configuration from external Marketplace trust
 - Version or tier semantics become stale.
 - Permanent Marketplace listing copy starts embedding current/next version numbers instead of delegating them to the changelog.
 - Stable release blockers disappear without evidence.
+
+
+### 2026-09-29 client-data hardening
+
+The release gate now requires SECURITY.md and package-lock.json, requires zero runtime dependencies, pins @vscode/vsce 4.0.0 in both package metadata and lockfile, requires npm ci --ignore-scripts in Marketplace automation, and rejects ad-hoc npx fetching of vsce.
