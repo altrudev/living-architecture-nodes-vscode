@@ -2,22 +2,25 @@
 
 ## Purpose
 
-Defines the public security and client-data handling boundary for the official Living Architecture Nodes VS Code product.
+Defines the public self-security and client-data handling boundary for the official Living Architecture Nodes VS Code product.
 
 ## Contracts
 
-- local-first Free runtime;
-- no source-content collection during scanning;
-- no runtime network client or telemetry;
-- trusted-workspace requirement for mutation/export;
-- workspace-confined writes;
-- client-safe exports omit absolute workspace paths and redact secret-shaped metadata;
-- private vulnerability reports must not be placed in public issues.
+- zero runtime npm dependencies;
+- no shell/dynamic execution or runtime network client;
+- no source-content collection during normal scanning;
+- Workspace Trust for mutation/export;
+- workspace-confined writes with traversal/symlink defenses;
+- exclusive node-draft creation;
+- atomic diagnostic replacement to avoid hard-link overwrite of an old destination inode;
+- explicit-allowlist exports without absolute workspace paths or full inventory;
+- defensive secret-shaped metadata redaction and Markdown escaping;
+- GitHub private vulnerability reporting is enabled.
 
 ## Current state
 
-Client-data hardening baseline for the 0.1.2 pre-release.
+Frequency-verified 0.1.2 client-data/security baseline.
 
 ## Regression triggers
 
-Security documentation diverges from actual runtime behavior, private reporting becomes unavailable without replacement, or export/runtime authority expands without review.
+Any runtime authority expansion, unsafe write primitive, export allowlist expansion without review, private reporting removal, runtime dependency introduction, or divergence between security documentation and tested behavior.
