@@ -31,6 +31,24 @@ It is not responsible for:
 - Read/write/export paths are canonicalized and confined to the active workspace.
 - Path traversal, absolute external targets, and symbolic-link escape are rejected.
 
+### Client-data security boundary
+
+- Architecture-memory scanning uses paths, presence checks, and filesystem metadata; it does not read source-file contents.
+- Diagnostic exports use an explicit allowlist rather than serializing arbitrary scanner state.
+- Exports omit absolute workspace paths and the full source/node inventory.
+- Relative paths attached to findings are redacted for secret-shaped values before JSON/Markdown generation.
+- Markdown path values are escaped before rendering.
+- Node drafts use exclusive creation; diagnostics use private same-directory temporary files followed by atomic replacement.
+- Runtime dependencies remain empty.
+
+### Release supply-chain boundary
+
+- @vscode/vsce is pinned to 4.0.0 in package.json and package-lock.json.
+- Marketplace automation installs with npm ci --ignore-scripts.
+- Packaging/publishing use the local locked vsce binary.
+- GitHub Actions remain pinned to exact commits.
+- GitHub private vulnerability reporting is enabled.
+
 ### Dependencies
 
 - VS Code Extension API
@@ -68,3 +86,7 @@ It is not responsible for:
 - Marketplace listing claiming paid capabilities that are not active.
 - Free operation becoming account-dependent.
 - Hard-coded extension versions drifting from package metadata.
+- Export allowlist expanding without privacy review.
+- Source contents, absolute workspace paths, or full repository inventories entering handoff output.
+- Direct truncate-overwrite returning to diagnostic writes.
+- Runtime dependencies or ad-hoc release-tool downloads appearing without review.
