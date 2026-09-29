@@ -11,8 +11,23 @@ Listing durability and release-channel cleanup.
 - Moved exact version tracking to the changelog and release manifest.
 - Added a release gate that rejects stale version-specific Marketplace wording.
 
+### Security and client-data hardening
+
+- Removed absolute workspace paths from diagnostic handoff exports.
+- Unified JSON and Markdown export sanitization.
+- Added defensive redaction for secret-shaped path metadata.
+- Escaped hostile Markdown/control characters in exported path values.
+- Replaced diagnostic files atomically instead of truncating an existing destination inode.
+- Changed node-draft creation to exclusive create so existing files cannot be overwritten.
+- Added restrictive file/directory permissions where POSIX modes are supported.
+- Added adversarial export, hard-link, symlink, traversal, and overwrite regression tests.
+- Added a public SECURITY.md with private vulnerability-reporting guidance.
+- Locked @vscode/vsce 4.0.0 in package-lock.json and removed ad-hoc npx fetching from the release workflow.
+
 ### Verification
 
+- Runtime dependencies remain empty.
+- npm audit for the locked release toolchain reports 0 vulnerabilities.
 - No runtime feature or entitlement behavior changed in this release.
 - Free core operation remains account-optional and local-first.
 - Paid Pro/Team capabilities remain disabled.
