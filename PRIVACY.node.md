@@ -1,41 +1,25 @@
 # Node: PRIVACY.md
 
-## Static layer
+## Purpose
 
-### Purpose
+Defines the public local-first privacy contract for the Free runtime, diagnostic handoff exports, and future paid entitlement operation.
 
-Defines the public local-first privacy contract for Free and future paid entitlement operation.
+## Contracts
 
-### Responsibility boundary
+- normal architecture-memory scan does not read source-file contents;
+- Free core requires no account and sends no repository data remotely;
+- exports require Workspace Trust;
+- exports use an explicit allowlist;
+- exports omit absolute workspace paths and full source/node inventories;
+- exports may contain relative paths associated with findings;
+- secret-shaped metadata is redacted before JSON and Markdown generation;
+- local private output permissions are applied where supported;
+- future entitlement exchange must not require repository contents.
 
-This node is part of the official Living Architecture Nodes VS Code product surface. It must remain aligned with the public product purpose and must not absorb unrelated runtime, payment-provider, or private research implementation.
+## Current state
 
-### Contracts
+0.1.2 client-data hardening baseline.
 
-- Local-first behavior.
-- Free core operation does not require an account.
-- Write-capable behavior requires explicit user action and Workspace Trust.
-- Unexecuted deeper checks are NOT VERIFIED, not failed.
+## Regression triggers
 
-## Dynamic layer
-
-### Current stability state
-
-Pre-release candidate for 0.1.2 on the path to stable 0.2.0.
-
-### Recent mutations
-
-- 2026-09-28: Added explicit no-content/no-telemetry default and future entitlement metadata boundary.
-
-### Security notes
-
-Do not introduce hidden telemetry, repository-content upload, private signing keys, payment secrets, or workspace escape.
-
-## Diagnostic layer
-
-### Regression triggers
-
-- Marketplace copy drifting from implemented behavior.
-- Version or tier semantics becoming stale.
-- Trust/path controls weakening.
-- Generated drafts being represented as verified architecture truth.
+Source contents entering scan/export, absolute paths or full inventory reappearing, hidden telemetry/network upload, or entitlement checks requiring repository contents.
