@@ -46,13 +46,39 @@ if (manifest.trusted_publishing?.workflow !== '.github/workflows/publish-marketp
 if (manifest.trusted_publishing?.audience !== 'marketplace.visualstudio.com') failures.push('trusted publishing OIDC audience drifted');
 if (typeof manifest.trusted_publishing?.policy_configured !== 'boolean') failures.push('trusted publishing policy_configured must be explicit');
 
-for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','LICENSE','media/lan-marketplace.png','.vscodeignore','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
+for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','SECURITY.md','LICENSE','media/lan-marketplace.png','.vscodeignore','package-lock.json','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
 
 const vscodeIgnore = text('.vscodeignore');
 if (!vscodeIgnore.split(/\r?\n/).includes('.github/**')) failures.push('.github/** must be excluded from the published VSIX');
 if (pkg.icon !== 'media/lan-marketplace.png') failures.push('Marketplace icon must use the PNG release icon');
 if (!pkg.homepage || !pkg.repository?.url || !pkg.bugs?.url) failures.push('Marketplace Resources links are incomplete');
 if (pkg.capabilities?.untrustedWorkspaces?.supported !== 'limited') failures.push('Workspace Trust listing must declare limited support');
+
+if (Object.keys(pkg.dependencies || {}).length !== 0) failures.push('runtime dependencies must remain empty unless explicitly reviewed');
+if (pkg.devDependencies?.['@vscode/vsce'] !== '4.0.0') failures.push('@vscode/vsce release tool must be pinned to 4.0.0');
+if (pkg.scripts?.package !== 'vsce package') failures.push('package script must invoke the pinned local vsce binary');
+const lock = JSON.parse(text('package-lock.json') || '{}');
+if (lock.lockfileVersion !== 3) failures.push('package-lock.json must use lockfileVersion 3');
+if (lock.packages?.['']?.devDependencies?.['@vscode/vsce'] !== '4.0.0') failures.push('package-lock root must pin @vscode/vsce 4.0.0');
+
+const security = manifest.security_baseline || {};
+if (security.runtime_dependencies !== 0) failures.push('security baseline must record zero runtime dependencies');
+if (security.scanner_reads_source_contents !== false) failures.push('scanner source-content boundary drifted');
+if (security.runtime_network_access !== false) failures.push('runtime network boundary drifted');
+if (security.runtime_shell_execution !== false) failures.push('runtime shell-execution boundary drifted');
+if (security.private_vulnerability_reporting !== true) failures.push('private vulnerability reporting must be enabled');
+if (security.diagnostic_export?.schema !== 'explicit-allowlist') failures.push('diagnostic export must use explicit allowlist schema');
+if (security.diagnostic_export?.absolute_workspace_paths_exported !== false) failures.push('diagnostic export must omit absolute workspace paths');
+if (security.diagnostic_export?.full_repository_inventory_exported !== false) failures.push('diagnostic export must omit full repository inventory');
+if (security.diagnostic_export?.secret_metadata_redaction !== true) failures.push('diagnostic export redaction must remain enabled');
+if (security.diagnostic_export?.markdown_path_escaping !== true) failures.push('diagnostic Markdown path escaping must remain enabled');
+if (security.diagnostic_export?.workspace_trust_required !== true) failures.push('diagnostic export must require Workspace Trust');
+if (security.diagnostic_export?.atomic_replacement !== true) failures.push('diagnostic export must use atomic replacement');
+if (security.diagnostic_export?.node_draft_exclusive_create !== true) failures.push('node drafts must use exclusive create');
+if (security.release_toolchain?.package_lock_required !== true) failures.push('release toolchain must require package-lock');
+if (security.release_toolchain?.vsce_version !== '4.0.0') failures.push('security baseline vsce version drifted');
+if (security.release_toolchain?.install_command !== 'npm ci --ignore-scripts') failures.push('security baseline install command drifted');
+if (security.release_toolchain?.ad_hoc_npx_fetch !== false) failures.push('ad-hoc npx tool fetching must remain disabled');
 
 const titleMenus = pkg.contributes?.menus?.['view/title'] || [];
 const exportMenu = titleMenus.find((x) => x.command === 'livingArchitectureNodes.exportHandoffBundle');
@@ -70,7 +96,9 @@ for (const phrase of [
   'actions/checkout@11d5960a326750d5838078e36cf38b85af677262',
   'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',
   'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
-  'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093'
+  'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093',
+  'npm ci --ignore-scripts',
+  './node_modules/.bin/vsce'
 ]) {
   if (!workflow.includes(phrase)) failures.push(`trusted publishing workflow missing required control: ${phrase}`);
 }
@@ -85,6 +113,10 @@ if ((workflow.match(/id-token:\s*write/g) || []).length !== 1) {
 
 if (/secrets\.VSCE_PAT|VSCE_PAT\s*:/.test(workflow)) {
   failures.push('Marketplace publishing workflow must not use a VSCE PAT secret');
+}
+
+if (/npx\s+--yes\s+@vscode\/vsce/.test(workflow)) {
+  failures.push('Marketplace publishing workflow must not fetch vsce ad hoc with npx');
 }
 
 const readme = text('README.md');
@@ -122,7 +154,7 @@ const forbidden = [
   /Frequency-Dev/,
   /Living-Architecture-Nodes-Product/
 ];
-for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','package.json']) {
+for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','SECURITY.md','package.json']) {
   const value = text(rel);
   for (const pattern of forbidden) if (pattern.test(value)) failures.push(`public listing/release material contains forbidden private material: ${rel}`);
 }
@@ -144,3 +176,7 @@ console.log('Marketplace listing/docs/privacy/license: synchronized');
 console.log('Publishing auth: GitHub Actions trusted OIDC');
 console.log(`Trusted publishing policy: ${manifest.trusted_publishing.policy_configured ? 'CONFIGURED' : 'PENDING'}`);
 console.log('Workspace Trust: limited; mutations require trust');
+console.log('Runtime dependencies: none');
+console.log('Release toolchain: locked @vscode/vsce 4.0.0 via npm ci --ignore-scripts');
+console.log('Client-data export: explicit allowlist; no source contents, absolute workspace path, or full inventory');
+console.log('Security reporting: GitHub private vulnerability reporting enabled');

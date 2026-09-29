@@ -20,6 +20,8 @@ Tracks cascade risk and release-sensitive coupling across the Living Architectur
 - `CHANGELOG.md` → Marketplace release history.
 - `release/listing-manifest.json` + `scripts/release-check.js` → release/listing synchronization, trusted publishing identity, and stable-publish blocker.
 - `.github/workflows/publish-marketplace.yml` → manual-only verified-VSIX publishing through GitHub OIDC.
+- `SECURITY.md` → public runtime/client-data security contract and private reporting route.
+- `package-lock.json` → locked development-only Marketplace packaging dependency graph.
 
 ## Dynamic layer
 
@@ -40,13 +42,29 @@ Tracks cascade risk and release-sensitive coupling across the Living Architectur
 - Added trusted GitHub OIDC publishing workflow with a separate verification job and narrowly scoped `id-token: write` publish job.
 - Stable 0.2.0 remains blocked until production monetization and artifact gates pass.
 
+### 2026-09-29 client-data and self-security hardening
+
+- Scanner source-content boundary explicitly tested: normal scan does not read source-file contents.
+- Diagnostic export changed to an explicit allowlist schema.
+- Absolute workspace path and full source/node inventories removed from handoff output.
+- Secret-shaped path metadata redacted identically for JSON and Markdown.
+- Hostile Markdown/control characters escaped before Markdown rendering.
+- Generated node drafts use exclusive create.
+- Diagnostic replacement uses private temporary files plus atomic same-directory rename.
+- Hard-link overwrite regression test added.
+- POSIX private file/directory modes enforced where supported.
+- Runtime npm dependencies remain zero.
+- Release toolchain locked to @vscode/vsce 4.0.0 with package-lock and npm ci --ignore-scripts.
+- GitHub private vulnerability reporting verified enabled.
+
+
 ### Troubleshooting order
 
 If packaging/listing fails:
 1. Run `npm test`.
 2. Review `scripts/release-check.js`.
 3. Compare `package.json` against `release/listing-manifest.json`.
-4. Verify README/CHANGELOG/PRIVACY/SUPPORT/LICENSE.
+4. Verify README/CHANGELOG/PRIVACY/SECURITY/SUPPORT/LICENSE and package-lock.json.
 5. Build and inspect the actual VSIX.
 
 If mutation/export security fails:

@@ -90,11 +90,13 @@ The export path must remain inside the trusted workspace.
 
 ## Privacy
 
-The extension reads workspace files needed for local analysis and writes only explicit local artifacts. Core Free operation does not send source code, architecture memory, diagnostics, secrets, repository content, or behavioral telemetry to a remote service.
+The scanner uses repository structure, relative paths, companion-node presence, and filesystem metadata; it does **not** read source-file contents for architecture-memory scanning.
+
+Diagnostic handoff exports are local. They contain counts plus relative paths associated with findings, not the full source/node inventory. Absolute workspace paths are removed and secret-shaped metadata is defensively redacted before both JSON and Markdown are written. Core Free operation does not send source code, architecture memory, diagnostics, secrets, repository content, or behavioral telemetry to a remote service.
 
 Future paid entitlement checks are designed to exchange account/product entitlement metadata only—not repository contents.
 
-See [PRIVACY.md](PRIVACY.md).
+See [PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md).
 
 ## Release channel
 
@@ -111,6 +113,7 @@ See [CHANGELOG.md](CHANGELOG.md) for current versions and release details.
 - GitHub Action: https://github.com/altrudev/living-architecture-nodes-action
 - Issues/support: https://github.com/altrudev/living-architecture-nodes-vscode/issues
 - Support policy: [SUPPORT.md](SUPPORT.md)
+- Security policy: [SECURITY.md](SECURITY.md)
 - License: [LICENSE](LICENSE)
 
 Living Architecture Nodes™ is a separate product from other Altru.dev research and development systems.

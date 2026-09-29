@@ -51,6 +51,9 @@ jobs:
           node-version: "22"
           cache: ""
 
+      - name: Install pinned release toolchain
+        run: npm ci --ignore-scripts
+
       - name: Verify dispatch authority and release gates
         env:
           REQUESTED_VERSION: ${{ inputs.version }}
@@ -118,7 +121,7 @@ jobs:
           if [ "${REQUESTED_CHANNEL}" = "pre-release" ]; then
             args+=(--pre-release)
           fi
-          npx --yes @vscode/vsce@4.0.0 "${args[@]}"
+          ./node_modules/.bin/vsce "${args[@]}"
           echo "vsix_name=${vsix_name}" >> "$GITHUB_OUTPUT"
 
       - name: Inspect packaged VSIX
@@ -175,6 +178,11 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
       - name: Download verified candidate
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -187,6 +195,9 @@ jobs:
           node-version: "22"
           cache: ""
 
+      - name: Install pinned release toolchain
+        run: npm ci --ignore-scripts
+
       - name: Verify candidate digest
         working-directory: dist
         run: sha256sum -c "${{ inputs.version }}.sha256"
@@ -196,4 +207,4 @@ jobs:
           VSIX: dist/living-architecture-nodes-${{ inputs.version }}.vsix
         run: |
           set -euo pipefail
-          npx --yes @vscode/vsce@4.0.0 publish --oidc --packagePath "$VSIX"
+          ./node_modules/.bin/vsce publish --oidc --packagePath "$VSIX"

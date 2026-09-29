@@ -1,5 +1,31 @@
 # CHANGELOG.node.md
 
+## 2026-09-29 — 0.1.2 client-data and self-security hardening
+
+### Changed
+
+- Removed absolute workspace path metadata from diagnostic exports.
+- Replaced arbitrary report serialization with an explicit export allowlist.
+- Removed full source-file/node-file inventories from handoff JSON.
+- Unified JSON and Markdown redaction from the same sanitized report.
+- Expanded secret-shaped metadata redaction.
+- Escaped hostile Markdown/control characters in path values.
+- Converted node-draft creation to exclusive create.
+- Converted diagnostic writes to private atomic replacement.
+- Added hard-link, overwrite, export-leak, secret-shaped filename, hostile-Markdown, symlink, traversal, and untrusted-workspace regression coverage.
+- Added SECURITY.md and verified GitHub private vulnerability reporting.
+- Locked the Marketplace release toolchain to @vscode/vsce 4.0.0 through package-lock.json and npm ci --ignore-scripts.
+- Runtime npm dependencies remain zero.
+
+### Frequency evidence
+
+- Architecture-memory self-check: 100/100.
+- Product/security tests: 10/10 passed.
+- npm audit: 0 vulnerabilities.
+- Real scanner/export client fixture: verified.
+- Runtime shell/network/dynamic-execution scan: clear.
+- VSIX package boundary: verified.
+
 ## 2026-09-28 — 0.1.1 controlled pre-release foundation
 
 ### Changed

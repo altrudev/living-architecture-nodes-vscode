@@ -1,41 +1,21 @@
 # Node: src/workspace.js
 
-## Static layer
+## Purpose
 
-### Purpose
+Handles VS Code workspace access while delegating all protected file writes to the workspace authority module.
 
-Handles workspace file access while delegating canonical path authorization to the product authority adapter.
+## Contracts
 
-### Responsibility boundary
+- mutation requires VS Code Workspace Trust;
+- open-file targets are canonical workspace-relative paths;
+- generated node drafts use the authority module exclusive-create path;
+- this module does not directly call fs.writeFile for protected outputs;
+- workspace walking does not follow symbolic-link directories.
 
-This node is part of the official Living Architecture Nodes VS Code product surface. It must remain aligned with the public product purpose and must not absorb unrelated runtime, payment-provider, or private research implementation.
+## Current state
 
-### Contracts
+Client-data/security hardening baseline for pre-release 0.1.2.
 
-- Local-first behavior.
-- Free core operation does not require an account.
-- Write-capable behavior requires explicit user action and Workspace Trust.
-- Unexecuted deeper checks are NOT VERIFIED, not failed.
+## Regression triggers
 
-## Dynamic layer
-
-### Current stability state
-
-Pre-release candidate for 0.1.2 on the path to stable 0.2.0.
-
-### Recent mutations
-
-- 2026-09-28: Bound open/write targets to canonical workspace-relative paths and made file mutation require Workspace Trust.
-
-### Security notes
-
-Do not introduce hidden telemetry, repository-content upload, private signing keys, payment secrets, or workspace escape.
-
-## Diagnostic layer
-
-### Regression triggers
-
-- Marketplace copy drifting from implemented behavior.
-- Version or tier semantics becoming stale.
-- Trust/path controls weakening.
-- Generated drafts being represented as verified architecture truth.
+Direct unguarded file writes, mutation in Restricted Mode, path escape, or symlink traversal.

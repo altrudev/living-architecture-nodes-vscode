@@ -1,7 +1,9 @@
 'use strict';
 
 const fs = require('fs/promises');
+const fsConstants = require('fs').constants;
 const path = require('path');
+const crypto = require('crypto');
 
 function isWithin(root, candidate) {
   const relative = path.relative(root, candidate);
@@ -52,4 +54,92 @@ async function resolveAuthorizedWorkspacePath(workspaceRoot, targetPath, options
   return candidate;
 }
 
-module.exports = { isWithin, resolveAuthorizedWorkspacePath };
+async function ensureAuthorizedParent(workspaceRoot, relativePath) {
+  const relativeParent = path.dirname(relativePath);
+  if (!relativeParent || relativeParent === '.') {
+    return fs.realpath(path.resolve(workspaceRoot));
+  }
+
+  const parentCandidate = await resolveAuthorizedWorkspacePath(workspaceRoot, relativeParent);
+  const existed = await pathExists(parentCandidate);
+  await fs.mkdir(parentCandidate, { recursive: true, mode: 0o700 });
+
+  const parentReal = await resolveAuthorizedWorkspacePath(workspaceRoot, relativeParent, { mustExist: true });
+  if (!existed && process.platform !== 'win32') await fs.chmod(parentReal, 0o700);
+  return parentReal;
+}
+
+function noFollowFlag() {
+  return typeof fsConstants.O_NOFOLLOW === 'number' ? fsConstants.O_NOFOLLOW : 0;
+}
+
+async function writeExclusiveFile(workspaceRoot, relativePath, content, mode) {
+  await ensureAuthorizedParent(workspaceRoot, relativePath);
+  const target = await resolveAuthorizedWorkspacePath(workspaceRoot, relativePath);
+  const flags = fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | noFollowFlag();
+
+  let handle;
+  try {
+    handle = await fs.open(target, flags, mode);
+    await handle.writeFile(content, 'utf8');
+    await handle.sync();
+    if (process.platform !== 'win32') await handle.chmod(mode);
+    return true;
+  } catch (error) {
+    if (error && error.code === 'EEXIST') return false;
+    throw error;
+  } finally {
+    if (handle) await handle.close();
+  }
+}
+
+async function writeAtomicReplacement(workspaceRoot, relativePath, content, mode) {
+  const parent = await ensureAuthorizedParent(workspaceRoot, relativePath);
+  const base = path.basename(relativePath);
+  const tempName = '.' + base + '.lan-tmp-' + crypto.randomBytes(8).toString('hex');
+  const tempRelative = path.join(path.dirname(relativePath), tempName);
+  const tempPath = await resolveAuthorizedWorkspacePath(workspaceRoot, tempRelative);
+  const flags = fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | noFollowFlag();
+
+  let handle;
+  try {
+    handle = await fs.open(tempPath, flags, mode);
+    await handle.writeFile(content, 'utf8');
+    await handle.sync();
+    if (process.platform !== 'win32') await handle.chmod(mode);
+    await handle.close();
+    handle = null;
+
+    const parentAgain = await resolveAuthorizedWorkspacePath(workspaceRoot, path.dirname(relativePath) || '.', { mustExist: true });
+    if (parentAgain !== parent) throw new Error('workspace authority denied: destination parent changed during write');
+
+    const finalPath = await resolveAuthorizedWorkspacePath(workspaceRoot, relativePath);
+    await fs.rename(tempPath, finalPath);
+    return true;
+  } finally {
+    if (handle) await handle.close();
+    try {
+      await fs.unlink(tempPath);
+    } catch (_) {
+      // Temp path was renamed or already cleaned up.
+    }
+  }
+}
+
+async function writeAuthorizedWorkspaceFile(workspaceRoot, relativePath, content, options = {}) {
+  if (typeof content !== 'string' && !Buffer.isBuffer(content)) {
+    throw new Error('workspace authority denied: content must be a string or Buffer');
+  }
+
+  const mode = options.mode === undefined ? 0o600 : options.mode;
+  if (options.failIfExists) {
+    return writeExclusiveFile(workspaceRoot, relativePath, content, mode);
+  }
+  return writeAtomicReplacement(workspaceRoot, relativePath, content, mode);
+}
+
+module.exports = {
+  isWithin,
+  resolveAuthorizedWorkspacePath,
+  writeAuthorizedWorkspaceFile
+};

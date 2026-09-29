@@ -40,5 +40,30 @@
     "homepage": "https://altru.dev/living-architecture-nodes",
     "repository": "https://github.com/altrudev/living-architecture-nodes-vscode.git",
     "issues": "https://github.com/altrudev/living-architecture-nodes-vscode/issues"
+  },
+  "security_baseline": {
+    "runtime_dependencies": 0,
+    "scanner_reads_source_contents": false,
+    "runtime_network_access": false,
+    "runtime_shell_execution": false,
+    "private_vulnerability_reporting": true,
+    "diagnostic_export": {
+      "schema": "explicit-allowlist",
+      "absolute_workspace_paths_exported": false,
+      "full_repository_inventory_exported": false,
+      "secret_metadata_redaction": true,
+      "markdown_path_escaping": true,
+      "workspace_trust_required": true,
+      "atomic_replacement": true,
+      "node_draft_exclusive_create": true,
+      "posix_private_file_mode": "0600",
+      "posix_new_directory_mode": "0700"
+    },
+    "release_toolchain": {
+      "package_lock_required": true,
+      "vsce_version": "4.0.0",
+      "install_command": "npm ci --ignore-scripts",
+      "ad_hoc_npx_fetch": false
+    }
   }
 }

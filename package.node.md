@@ -1,42 +1,22 @@
 # Node: package.json
 
-## Static layer
+## Purpose
 
-### Purpose
+Defines Marketplace identity, commands, trust declarations, release scripts, and the development-only packaging toolchain.
 
-Defines Marketplace identity, metadata, commands, configuration, trust declarations, pricing label, Resources links, and release scripts.
+## Contracts
 
-### Responsibility boundary
+- runtime dependency set remains empty;
+- Free core remains account-optional and local-first;
+- write-capable commands require Workspace Trust;
+- Marketplace packaging uses the repository-pinned @vscode/vsce 4.0.0 development dependency;
+- package-lock.json is the release dependency lock;
+- package generation invokes the local vsce binary rather than fetching a tool ad hoc.
 
-This node is part of the official Living Architecture Nodes VS Code product surface. It must remain aligned with the public product purpose and must not absorb unrelated runtime, payment-provider, or private research implementation.
+## Current state
 
-### Contracts
+Pre-release 0.1.2 with locked release tooling.
 
-- Local-first behavior.
-- Free core operation does not require an account.
-- Write-capable behavior requires explicit user action and Workspace Trust.
-- Unexecuted deeper checks are NOT VERIFIED, not failed.
+## Regression triggers
 
-## Dynamic layer
-
-### Current stability state
-
-Pre-release candidate for 0.1.2 on the path to stable 0.2.0.
-
-### Recent mutations
-
-- 2026-09-28: Corrected the Marketplace pre-release version strategy, added complete listing metadata, Restricted Mode declaration, and machine-enforced release checks.
-- 2026-09-28: Removed version-specific release-channel copy from the Marketplace listing so the product page cannot become stale after each publication.
-
-### Security notes
-
-Do not introduce hidden telemetry, repository-content upload, private signing keys, payment secrets, or workspace escape.
-
-## Diagnostic layer
-
-### Regression triggers
-
-- Marketplace copy drifting from implemented behavior.
-- Version or tier semantics becoming stale.
-- Trust/path controls weakening.
-- Generated drafts being represented as verified architecture truth.
+Runtime dependencies are introduced without review, package tooling becomes unpinned, package-lock disappears, or Marketplace metadata/trust semantics drift.

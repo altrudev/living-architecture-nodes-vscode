@@ -1,46 +1,41 @@
 # Node: release/listing-manifest.json
 
-## Static layer
+## Purpose
 
-### Purpose
+Machine-readable source of truth for Marketplace channel/version, pricing, trusted publishing identity, release blockers, and the security/client-data baseline that must remain true for publication.
 
-Machine-readable source of truth for Marketplace channel, version, pricing, trusted publishing identity, publication readiness, and stable-release blockers.
+## Trusted publishing contract
 
-### Trusted publishing contract
+- authentication strategy: github-oidc;
+- repository: altrudev/living-architecture-nodes-vscode;
+- workflow: .github/workflows/publish-marketplace.yml;
+- OIDC audience: marketplace.visualstudio.com;
+- stored Marketplace PAT: none.
 
-The Marketplace authentication strategy is `github-oidc`.
+## Client-data/security baseline
 
-The trusted identity is bound to:
+The manifest requires:
 
-- repository: `altrudev/living-architecture-nodes-vscode`
-- workflow: `.github/workflows/publish-marketplace.yml`
-- audience: `marketplace.visualstudio.com`
+- zero runtime dependencies;
+- no source-content reads during architecture-memory scanning;
+- no runtime network or shell execution;
+- GitHub private vulnerability reporting enabled;
+- explicit-allowlist diagnostic exports;
+- no absolute workspace path in exports;
+- no full source/node repository inventory in exports;
+- secret-shaped metadata redaction;
+- Markdown path escaping;
+- Workspace Trust for export;
+- atomic diagnostic replacement;
+- exclusive node-draft creation;
+- restrictive POSIX output modes where supported;
+- package-lock-controlled @vscode/vsce 4.0.0 release tooling installed with npm ci --ignore-scripts;
+- no ad-hoc npx release-tool fetch.
 
-No Marketplace PAT is part of the intended release path.
+## Current blockers
 
-## Dynamic layer
+The repository-side OIDC workflow is implemented, but Visual Studio Marketplace trusted-publisher policy registration and the first OIDC exchange remain external publication gates. Stable 0.2.0 retains the separate billing, entitlement, upgrade, and final artifact gates.
 
-### Current stability state
+## Regression triggers
 
-The repository-side OIDC workflow is defined, but the Marketplace trusted-publisher policy is still pending.
-
-### Current blockers
-
-- Register the exact GitHub repository/workflow trust policy in Visual Studio Marketplace.
-- Verify a successful first OIDC token exchange.
-- Stable 0.2.0 retains all product, billing, upgrade, and artifact blockers.
-
-## Security notes
-
-Repository workflow readiness and Marketplace trust-policy readiness are separate states. Neither may be inferred from the other.
-
-A failed OIDC exchange must fail closed; it must not fall back to PAT authentication.
-
-## Diagnostic layer
-
-### Regression triggers
-
-- Publishing auth strategy changes away from `github-oidc` without review.
-- Trusted repository/workflow identity drifts.
-- A long-lived Marketplace secret is introduced.
-- Publication gates become true without verification evidence.
+Any security-baseline field changes without matching implementation/tests, trusted-publishing identity drift, long-lived Marketplace credentials, or publication gates becoming true without evidence.

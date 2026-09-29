@@ -1,41 +1,26 @@
 # Node: src/exporter.js
 
-## Static layer
+## Purpose
 
-### Purpose
+Creates client-safe local diagnostic handoff bundles inside an authorized trusted workspace.
 
-Writes local diagnostic bundles inside an authorized trusted workspace.
+## Contracts
 
-### Responsibility boundary
+- Workspace Trust is mandatory;
+- the export path remains inside the active workspace;
+- export uses an explicit allowlist schema rather than serializing arbitrary scanner fields;
+- full source-file and node-file inventories are not exported;
+- JSON and Markdown are generated from the same sanitized report;
+- absolute workspace metadata is removed before export;
+- secret-shaped path metadata is redacted before either format is produced;
+- hostile Markdown/control characters in path values are escaped;
+- source-file contents are never added by the exporter;
+- diagnostic files are written through atomic replacement with private file permissions where supported.
 
-This node is part of the official Living Architecture Nodes VS Code product surface. It must remain aligned with the public product purpose and must not absorb unrelated runtime, payment-provider, or private research implementation.
+## Current state
 
-### Contracts
+Client-data hardening baseline for pre-release 0.1.2.
 
-- Local-first behavior.
-- Free core operation does not require an account.
-- Write-capable behavior requires explicit user action and Workspace Trust.
-- Unexecuted deeper checks are NOT VERIFIED, not failed.
+## Regression triggers
 
-## Dynamic layer
-
-### Current stability state
-
-Pre-release candidate for 0.1.2 on the path to stable 0.2.0.
-
-### Recent mutations
-
-- 2026-09-28: Bound export destinations to the workspace authority adapter and synchronized export version metadata with package.json.
-
-### Security notes
-
-Do not introduce hidden telemetry, repository-content upload, private signing keys, payment secrets, or workspace escape.
-
-## Diagnostic layer
-
-### Regression triggers
-
-- Marketplace copy drifting from implemented behavior.
-- Version or tier semantics becoming stale.
-- Trust/path controls weakening.
-- Generated drafts being represented as verified architecture truth.
+Allowlist expansion without review, JSON/Markdown sanitization drift, absolute local paths, raw secret-shaped metadata, full repository inventories, source contents, or direct unsafe writes.
