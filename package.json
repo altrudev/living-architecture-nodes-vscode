@@ -224,7 +224,9 @@
     "release:check": "node scripts/release-check.js",
     "test:product": "node --test test/*.test.js",
     "test": "npm run self-check && npm run release:check && npm run test:product",
-    "package": "npx --yes @vscode/vsce package"
+    "package": "vsce package"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@vscode/vsce": "4.0.0"
+  }
 }

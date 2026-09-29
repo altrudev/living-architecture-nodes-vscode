@@ -1,83 +1,23 @@
 # Node: src/redactor.js
 
-## Static layer
+## Purpose
 
-### Purpose
+Defensively redacts common credential/token patterns from diagnostic metadata before it can be exported.
 
-Redacts common secret/token patterns from diagnostic exports before writing them.
+## Contracts
 
-### Responsibility boundary
+The redactor covers GitHub tokens, common API-key/token/password assignments, OpenAI/Stripe-style secret prefixes, Google API keys, AWS access-key identifiers, Slack token forms, bearer credentials, and private-key blocks.
 
-This node documents the architectural role of `src/redactor.js` inside the Living Architecture Nodes VS Code extension.
+It operates on strings recursively inside the controlled diagnostic report structure.
 
-This file is responsible for its direct implementation concern only. It should not silently absorb unrelated product behavior, licensing policy, publishing workflow, or remote service behavior without updating the affected nodes and `ARCH.md`.
+## Current state
 
-### Dependencies
+Expanded for the 0.1.2 client-data hardening pass.
 
-Depends on adjacent extension modules, VS Code extension packaging behavior, and the Living Architecture Nodes project conventions where relevant.
+## Security boundary
 
-### Dependents
+Redaction is defense in depth, not permission to collect source contents. The scanner must continue avoiding source-file content collection.
 
-The extension runtime, local diagnostic workflow, package self-check, and future Marketplace/publishing steps may depend on this file remaining aligned with its node memory.
+## Regression triggers
 
-### Contracts
-
-Expected inputs:
-
-- Workspace state, configuration, project files, or package metadata as applicable.
-
-Expected outputs:
-
-- Deterministic local behavior aligned with the Living Architecture Nodes protocol.
-
-Side effects:
-
-- None beyond the explicit role of `src/redactor.js`. File-writing behavior must remain user-confirmed where applicable.
-
-## Dynamic layer
-
-### Current stability state
-
-Stable for v0.1.0 initial package.
-
-### Recent mutations
-
-- 2026-06-03T14:56:24.595492Z: Created initial implementation and companion node.
-
-### Known fragile points
-
-- Behavior should stay compatible with the GitHub Action and public specification where file naming and health concepts overlap.
-- Any change to scan or generation behavior may affect user trust because node files are architecture memory.
-
-### Interaction warnings
-
-Update related nodes, `ARCH.md`, `NERVE.md`, and `CHANGELOG.node.md` when changing this file in a way that affects commands, file writes, scan output, export format, or user-visible behavior.
-
-### Performance observations
-
-No known degradation conditions yet. Large workspaces may require exclusion tuning.
-
-### Security notes
-
-Maintain local-first behavior. Do not introduce telemetry, remote code execution, hidden analytics, or unconfirmed file modifications.
-
-## Diagnostic layer
-
-### Past bug patterns
-
-None recorded yet.
-
-### Near misses
-
-None recorded yet.
-
-### Regression triggers
-
-- Changing companion path conventions
-- Changing output formats without updating documentation
-- Adding hidden network behavior
-- Adding write behavior without explicit confirmation
-
-### Suspected hidden coupling
-
-This file may be coupled to extension command registration, scan report shape, and expected public Living Architecture Nodes terminology.
+A supported secret shape survives export, JSON and Markdown use different sanitization inputs, or redaction is used to justify broader data collection.

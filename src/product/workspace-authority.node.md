@@ -1,41 +1,23 @@
 # Node: src/product/workspace-authority.js
 
-## Static layer
+## Purpose
 
-### Purpose
+Provides the canonical workspace authority and secure write primitive for protected reads, node drafts, and diagnostic exports.
 
-Provides the public extension canonical workspace path boundary for protected reads, writes, and exports.
+## Contracts
 
-### Responsibility boundary
+- all protected paths remain inside the active workspace;
+- absolute external paths, parent traversal, and symbolic-link components are rejected;
+- generated node drafts use exclusive creation and never overwrite an existing file;
+- replaceable outputs are written to a private same-directory temporary file and atomically renamed;
+- atomic replacement avoids modifying an attacker-precreated hard link to an old destination inode;
+- newly created private files use mode 0600 where POSIX modes are supported;
+- newly created output directories use mode 0700 where supported.
 
-This node is part of the official Living Architecture Nodes VS Code product surface. It must remain aligned with the public product purpose and must not absorb unrelated runtime, payment-provider, or private research implementation.
+## Current state
 
-### Contracts
+Client-data/security hardening baseline for pre-release 0.1.2.
 
-- Local-first behavior.
-- Free core operation does not require an account.
-- Write-capable behavior requires explicit user action and Workspace Trust.
-- Unexecuted deeper checks are NOT VERIFIED, not failed.
+## Regression triggers
 
-## Dynamic layer
-
-### Current stability state
-
-Pre-release candidate for 0.1.2 on the path to stable 0.2.0.
-
-### Recent mutations
-
-- 2026-09-28: Added traversal, absolute-path, resolved-target, and symbolic-link escape rejection.
-
-### Security notes
-
-Do not introduce hidden telemetry, repository-content upload, private signing keys, payment secrets, or workspace escape.
-
-## Diagnostic layer
-
-### Regression triggers
-
-- Marketplace copy drifting from implemented behavior.
-- Version or tier semantics becoming stale.
-- Trust/path controls weakening.
-- Generated drafts being represented as verified architecture truth.
+Path escape, direct truncate-overwrite, non-exclusive draft creation, following symlinks, weakening file permissions, or bypassing Workspace Trust.

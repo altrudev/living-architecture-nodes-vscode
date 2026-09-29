@@ -1,61 +1,27 @@
 # Node: .github/workflows/publish-marketplace.yml
 
-## Static layer
+## Purpose
 
-### Purpose
+Verifies, packages, and publishes the exact Living Architecture Nodes VSIX through Visual Studio Marketplace trusted OIDC publishing.
 
-Publishes an already verified Living Architecture Nodes VSIX to the Visual Studio Marketplace using GitHub Actions OIDC trusted publishing instead of a stored PAT.
+## Authority boundary
 
-### Authority boundary
+The workflow is manual-only. Verification has contents: read. Only the publish job receives id-token: write.
 
-The workflow is manual-only through `workflow_dispatch`.
+## Supply-chain controls
 
-Normal pushes, pull requests, tags, and merges cannot publish the extension.
+- GitHub Actions are pinned to exact commit SHAs;
+- checkout persistence is disabled;
+- the release toolchain is installed with npm ci --ignore-scripts from package-lock.json;
+- @vscode/vsce is pinned in package.json/package-lock.json;
+- packaging and publishing invoke ./node_modules/.bin/vsce;
+- no VSCE PAT is used;
+- the publish job downloads and verifies the exact artifact produced by the verification job.
 
-The verification job has only `contents: read`. The publish job receives the additional `id-token: write` permission required to request a short-lived GitHub OIDC token.
+## Current state
 
-### Trusted publishing identity
+Repository-side OIDC workflow hardened; Marketplace trust-policy registration remains a separate external gate.
 
-- GitHub owner: `altrudev`
-- Repository: `living-architecture-nodes-vscode`
-- Workflow: `.github/workflows/publish-marketplace.yml`
-- OIDC audience used by vsce: `marketplace.visualstudio.com`
-- Publisher credential type: short-lived trusted OIDC credential
-- Stored Marketplace PAT: none
+## Regression triggers
 
-### Release behavior
-
-1. Require dispatch from `main`.
-2. Require requested version to equal `package.json`.
-3. Require an explicit channel.
-4. If publication is requested, require the literal confirmation `PUBLISH`.
-5. Enforce release-manifest publication gates.
-6. Run LAN tests and release checks.
-7. Package the exact VSIX.
-8. Inspect the packaged manifest and scan for forbidden material.
-9. Hash and upload the verified candidate.
-10. In a separate OIDC-enabled job, download and verify the same artifact.
-11. Publish that exact VSIX using `vsce publish --oidc --packagePath`.
-
-## Dynamic layer
-
-### Current stability state
-
-Repository side implemented; Marketplace trusted-publisher policy must still be registered for this exact repository/workflow before OIDC publication can succeed.
-
-### Supply-chain controls
-
-GitHub Actions are pinned to exact commit SHAs.
-
-`@vscode/vsce` is pinned to version `4.0.0`.
-
-The workflow does not read or reference `VSCE_PAT`.
-
-### Regression triggers
-
-- Adding push/tag automatic publication.
-- Granting `id-token: write` to the verification job.
-- Adding a Marketplace PAT secret.
-- Publishing a VSIX different from the one tested and hashed.
-- Allowing publication from a non-main ref.
-- Bypassing `release/listing-manifest.json` gates.
+Ad-hoc npx tool downloads, a stored PAT, automatic push/tag publication, broader OIDC permission, publishing an artifact different from the verified one, or unpinned Actions.

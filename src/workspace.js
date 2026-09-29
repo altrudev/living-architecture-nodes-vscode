@@ -3,7 +3,10 @@
 const vscode = require('vscode');
 const fs = require('fs/promises');
 const path = require('path');
-const { resolveAuthorizedWorkspacePath } = require('./product/workspace-authority');
+const {
+  resolveAuthorizedWorkspacePath,
+  writeAuthorizedWorkspaceFile
+} = require('./product/workspace-authority');
 
 function ensureWorkspaceFolder() {
   const folders = vscode.workspace.workspaceFolders;
@@ -22,7 +25,7 @@ async function openWorkspaceFile(relativePath) {
     const doc = await vscode.workspace.openTextDocument(absPath);
     await vscode.window.showTextDocument(doc, { preview: false });
   } catch (error) {
-    vscode.window.showWarningMessage(`Could not open ${relativePath}: ${error.message}`);
+    vscode.window.showWarningMessage('Could not open ' + relativePath + ': ' + error.message);
   }
 }
 
@@ -31,11 +34,10 @@ async function writeWorkspaceFile(relativePath, content, options = {}) {
   if (!folder) throw new Error('No workspace folder open.');
   if (!vscode.workspace.isTrusted) throw new Error('Workspace Trust is required for file mutation.');
 
-  const absPath = await resolveAuthorizedWorkspacePath(folder.uri.fsPath, relativePath);
-  await fs.mkdir(path.dirname(absPath), { recursive: true });
-  if (options.failIfExists && await fileExists(absPath)) return false;
-  await fs.writeFile(absPath, content, 'utf8');
-  return true;
+  return writeAuthorizedWorkspaceFile(folder.uri.fsPath, relativePath, content, {
+    failIfExists: Boolean(options.failIfExists),
+    mode: 0o600
+  });
 }
 
 async function walkFiles(rootPath, options = {}) {
@@ -93,13 +95,13 @@ function minimatchLite(relativePath, glob) {
   }
   if (normalizedGlob.startsWith('**/') && normalizedGlob.endsWith('/**')) {
     const part = normalizedGlob.slice(3, -3);
-    return rel.includes(`/${part}/`) || rel.startsWith(`${part}/`);
+    return rel.includes('/' + part + '/') || rel.startsWith(part + '/');
   }
   if (normalizedGlob.includes('*')) {
     const escaped = normalizedGlob.replace(/[.+^$\{\}()|[\]\\]/g, '\\$&').replace(/\*\*/g, '.*').replace(/\*/g, '[^/]*');
-    return new RegExp(`^${escaped}$`).test(rel);
+    return new RegExp('^' + escaped + '$').test(rel);
   }
-  return rel === normalizedGlob || rel.startsWith(`${normalizedGlob}/`);
+  return rel === normalizedGlob || rel.startsWith(normalizedGlob + '/');
 }
 
 module.exports = {
