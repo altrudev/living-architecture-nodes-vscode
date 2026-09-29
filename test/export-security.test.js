@@ -14,8 +14,10 @@ function reportFixture(root) {
     rootPath: root,
     status: 'warning',
     healthScore: 97,
-    sourceFiles: [{ sourcePath: secretName, nodePath: 'token=ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ123456.node.md' }],
-    nodeFiles: [],
+    sourceContents: 'CLIENT_SOURCE_SECRET_X7Y9Z_DO_NOT_EXPORT',
+    unexpectedNested: { privateData: 'CLIENT_PRIVATE_METADATA_DO_NOT_EXPORT' },
+    sourceFiles: [{ sourcePath: 'all-source-inventory.js', nodePath: 'all-source-inventory.node.md' }],
+    nodeFiles: ['all-node-inventory.node.md'],
     missingRequired: [],
     missingNodes: [{ sourcePath: secretName, nodePath: 'token=ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ123456.node.md' }],
     dirtyNodes: [],
@@ -31,13 +33,26 @@ function reportFixture(root) {
   };
 }
 
-test('sanitized export removes absolute workspace metadata and redacts secret-shaped paths', () => {
+test('sanitized export uses an explicit allowlist and redacts secret-shaped paths', () => {
   const root = path.join(os.tmpdir(), 'client-private-root');
   const safe = sanitizeReportForExport(reportFixture(root));
   const text = JSON.stringify(safe);
+
+  for (const forbidden of [
+    root,
+    'CLIENT_SOURCE_SECRET_X7Y9Z_DO_NOT_EXPORT',
+    'CLIENT_PRIVATE_METADATA_DO_NOT_EXPORT',
+    'all-source-inventory.js',
+    'all-node-inventory.node.md',
+    'ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ123456'
+  ]) {
+    assert.equal(text.includes(forbidden), false);
+  }
+
   assert.equal(Object.prototype.hasOwnProperty.call(safe, 'rootPath'), false);
-  assert.equal(text.includes(root), false);
-  assert.equal(text.includes('ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ123456'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(safe, 'sourceFiles'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(safe, 'nodeFiles'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(safe, 'sourceContents'), false);
   assert.equal(text.includes('[REDACTED]'), true);
 });
 
@@ -52,12 +67,19 @@ test('JSON and Markdown exports share the same redacted client-safe model', asyn
   const markdown = fs.readFileSync(result.markdownPath, 'utf8');
 
   for (const output of [json, markdown]) {
-    assert.equal(output.includes(root), false);
-    assert.equal(output.includes('ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ123456'), false);
+    for (const forbidden of [
+      root,
+      'CLIENT_SOURCE_SECRET_X7Y9Z_DO_NOT_EXPORT',
+      'CLIENT_PRIVATE_METADATA_DO_NOT_EXPORT',
+      'all-source-inventory.js',
+      'all-node-inventory.node.md',
+      'ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ123456'
+    ]) {
+      assert.equal(output.includes(forbidden), false);
+    }
+    assert.equal(output.includes('[REDACTED]'), true);
   }
 
-  assert.match(json, /\[REDACTED\]/);
-  assert.match(markdown, /\[REDACTED\]/);
   assert.equal(markdown.includes('[click](command:evil)'), false);
   assert.match(markdown, /\\\[click\\\]\\\(command:evil\\\)/);
 

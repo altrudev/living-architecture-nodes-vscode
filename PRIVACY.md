@@ -29,7 +29,7 @@ Write and export paths are confined to the active workspace. Absolute external t
 
 ## Diagnostic handoff exports
 
-Exports may include relative repository paths and architecture-maintenance findings because those are necessary to make the handoff useful.
+Exports may include relative repository paths associated with findings and architecture-maintenance findings because those are necessary to make the handoff useful. The full source-file and node-file inventories are not exported.
 
 Before export:
 

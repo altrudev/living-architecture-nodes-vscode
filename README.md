@@ -92,7 +92,7 @@ The export path must remain inside the trusted workspace.
 
 The scanner uses repository structure, relative paths, companion-node presence, and filesystem metadata; it does **not** read source-file contents for architecture-memory scanning.
 
-Diagnostic handoff exports are local. They may contain relative repository paths and maintenance findings, but absolute workspace paths are removed and secret-shaped metadata is defensively redacted before both JSON and Markdown are written. Core Free operation does not send source code, architecture memory, diagnostics, secrets, repository content, or behavioral telemetry to a remote service.
+Diagnostic handoff exports are local. They contain counts plus relative paths associated with findings, not the full source/node inventory. Absolute workspace paths are removed and secret-shaped metadata is defensively redacted before both JSON and Markdown are written. Core Free operation does not send source code, architecture memory, diagnostics, secrets, repository content, or behavioral telemetry to a remote service.
 
 Future paid entitlement checks are designed to exchange account/product entitlement metadata only—not repository contents.
 
