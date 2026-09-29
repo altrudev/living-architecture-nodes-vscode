@@ -65,5 +65,21 @@
       "install_command": "npm ci --ignore-scripts",
       "ad_hoc_npx_fetch": false
     }
+  },
+  "commercial_model": {
+    "tiers": [
+      "free",
+      "pro",
+      "team"
+    ],
+    "free_enabled": true,
+    "free_account_required": false,
+    "pro_defined": true,
+    "team_defined": true,
+    "paid_production_enabled": false,
+    "paid_prices_published": false,
+    "enterprise_issuable": false,
+    "public_tier_contract": "PRODUCT-TIERS.md",
+    "unavailable_paid_check_status": "NOT_VERIFIED"
   }
 }

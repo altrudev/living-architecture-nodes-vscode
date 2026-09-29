@@ -22,9 +22,13 @@ Generated drafts are **not verified architecture truth**. They must be populated
 
 The Marketplace extension remains **Free** and the core local workflow does not require an account.
 
-The commercial product model supports deeper optional Pro and Team capabilities such as semantic architectural drift, impact analysis, regression correlation, signed verification receipts, historical comparison, shared policy, and cross-repository analysis.
+The commercial product model uses **Free / Pro / Team**. Free remains useful and account-optional. Pro is the individual paid tier, and Team is the organization paid tier.
 
-**Paid capabilities are not enabled in the current pre-release channel.** Until production entitlement services are activated, the extension safely operates as Free.
+Current paid capability direction includes semantic architectural drift, impact analysis, regression correlation, signed verification receipts, historical comparison, shared policy, and cross-repository analysis.
+
+**Paid capabilities and paid prices are not enabled in the current pre-release channel.** Until production pricing, billing, entitlement, and customer-term gates are activated, the extension safely operates as Free.
+
+See [PRODUCT-TIERS.md](PRODUCT-TIERS.md) for the public tier contract.
 
 If a deeper check is unavailable because it was not executed, the correct status is:
 
