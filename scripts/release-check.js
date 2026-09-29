@@ -44,6 +44,13 @@ if (commercial.paid_prices_published !== false) failures.push('paid prices must 
 if (commercial.enterprise_issuable !== false) failures.push('Enterprise must remain future-only until separately implemented');
 if (commercial.public_tier_contract !== 'PRODUCT-TIERS.md') failures.push('public tier contract source drifted');
 if (commercial.unavailable_paid_check_status !== 'NOT_VERIFIED') failures.push('unavailable paid checks must remain NOT_VERIFIED');
+if (commercial.subscription_unit !== 'capability-authority') failures.push('subscription unit must remain capability-authority');
+if (commercial.ordinary_scans_metered !== false) failures.push('ordinary local scans must remain unmetered');
+if (commercial.usage_quota_required_for_local_checks !== false) failures.push('local checks must not require a LAN usage quota');
+if (commercial.local_compute_default !== true) failures.push('local compute must remain the default');
+if (commercial.entitlement_refresh_per_check !== false) failures.push('entitlement refresh must not be required per check');
+if (commercial.remote_compute_production_enabled !== false) failures.push('remote compute must remain production-disabled');
+if (commercial.remote_compute_silent_fallback_allowed !== false) failures.push('silent remote fallback must remain prohibited');
 if (manifest.pre_release_publish_allowed !== false) failures.push('pre-release publishing must remain blocked while Marketplace authentication is unavailable');
 if (!Array.isArray(manifest.pre_release_blockers) || manifest.pre_release_blockers.length === 0) failures.push('pre-release publication blocker must be recorded');
 if (manifest.stable_publish_allowed !== false) failures.push('stable publishing must remain blocked at this stage');
@@ -134,6 +141,9 @@ for (const phrase of [
   'commercial product model uses **Free / Pro / Team**',
   'Paid capabilities and paid prices are not enabled',
   'See [PRODUCT-TIERS.md](PRODUCT-TIERS.md) for the public tier contract.',
+  'Ordinary local scans are not metered by LAN.',
+  'A paid subscription unlocks capabilities; it is not a bundle of scan credits.',
+  'Remote compute is not production-enabled.',
   'Generated drafts are **not verified architecture truth**',
   'NOT VERIFIED',
   'no telemetry',
@@ -155,7 +165,7 @@ for (const pattern of [
 }
 
 const tierContract = text('PRODUCT-TIERS.md');
-for (const phrase of ['Free / Pro / Team','Free  ACTIVE','Pro   DEFINED / NOT YET PRODUCTION-ACTIVE','Team  DEFINED / NOT YET PRODUCTION-ACTIVE','Exact paid prices are not published or active yet','Enterprise/offline/self-hosted licensing is a future direction only']) {
+for (const phrase of ['Free / Pro / Team','Free  ACTIVE','Pro   DEFINED / NOT YET PRODUCTION-ACTIVE','Team  DEFINED / NOT YET PRODUCTION-ACTIVE','Exact paid prices are not published or active yet','Enterprise/offline/self-hosted licensing is a future direction only','local computation by default','subscription grants capability authority, not scan credits','ordinary local scans are not metered by LAN','remote compute is not production-enabled']) {
   if (!tierContract.includes(phrase)) failures.push(`PRODUCT-TIERS.md missing required statement: ${phrase}`);
 }
 
@@ -192,6 +202,9 @@ console.log('Pricing label: Free');
 console.log('Commercial tiers: Free / Pro / Team');
 console.log('Pro/Team production activation: BLOCKED pending monetization gates');
 console.log('Enterprise entitlement: NOT IMPLEMENTED');
+console.log('Execution economics: local-first / capability subscription / ordinary scans unmetered');
+console.log('Entitlement refresh per check: false');
+console.log('Remote compute production: DISABLED');
 console.log('Marketplace listing/docs/privacy/license: synchronized');
 console.log('Publishing auth: GitHub Actions trusted OIDC');
 console.log(`Trusted publishing policy: ${manifest.trusted_publishing.policy_configured ? 'CONFIGURED' : 'PENDING'}`);

@@ -13,6 +13,7 @@ Defines the public Living Architecture Nodes commercial tier contract without ex
 - paid production capabilities and paid prices remain disabled/unpublished until monetization gates pass;
 - unavailable paid checks resolve to NOT VERIFIED;
 - Enterprise/offline/self-hosted licensing remains future-only and is not currently issuable.
+- current capabilities are local-first; subscriptions grant capability authority rather than scan quotas; ordinary local scans are not LAN-metered; remote compute is disabled.
 
 ## Boundary
 

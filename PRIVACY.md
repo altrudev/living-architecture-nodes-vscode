@@ -59,3 +59,9 @@ Future signed entitlement tokens are stored using VS Code SecretStorage. Product
 Core functionality does not require behavioral telemetry.
 
 If optional aggregate product metrics are introduced later, they must be separately disclosed and must not contain repository contents or alter verification outcomes.
+
+## Compute and entitlement network boundary
+
+Current Free/Pro/Team verification capabilities are designed to execute locally. Ordinary scans do not require a LAN network request or per-scan entitlement refresh. Signed entitlements are verified locally.
+
+Remote compute is not production-enabled. A future remote capability requires separate disclosure and explicit user authorization; a paid subscription alone is not consent to upload repository content.

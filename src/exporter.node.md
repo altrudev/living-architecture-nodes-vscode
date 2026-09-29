@@ -19,7 +19,7 @@ Creates client-safe local diagnostic handoff bundles inside an authorized truste
 
 ## Current state
 
-Client-data hardening baseline for pre-release 0.1.2.
+Client-data hardening baseline for pre-release 0.1.3.
 
 ## Regression triggers
 

@@ -14,14 +14,14 @@ The roadmap describes LAN-specific product evolution only. It does not expose pr
 
 - Free core remains useful without an account.
 - Paid capabilities add verification depth rather than changing evidence truth.
-- 0.1.2 is the current controlled pre-release.
+- 0.1.3 is the current controlled pre-release.
 - 0.2.0 stable is blocked until monetization, artifact, listing, and upgrade gates pass.
 
 ## Dynamic layer
 
 ### Current stability state
 
-Synchronized with the 2026-09-28 0.1.2 pre-release candidate.
+Synchronized with the 2026-09-28 0.1.3 pre-release candidate.
 
 ### Recent mutations
 

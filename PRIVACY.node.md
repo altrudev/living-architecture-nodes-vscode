@@ -18,7 +18,7 @@ Defines the public local-first privacy contract for the Free runtime, diagnostic
 
 ## Current state
 
-0.1.2 client-data hardening baseline.
+0.1.3 client-data hardening baseline.
 
 ## Regression triggers
 

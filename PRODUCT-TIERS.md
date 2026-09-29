@@ -57,6 +57,20 @@ Exact paid prices are not published or active yet.
 
 Paid production activation requires approved pricing, Stripe billing configuration, entitlement verification, customer terms, cancellation/downgrade behavior, privacy/security alignment, and final release verification.
 
+
+## Execution economics
+
+LAN uses **local computation by default**.
+
+- a subscription grants capability authority, not scan credits;
+- ordinary local scans are not metered by LAN;
+- current Free/Pro/Team checks do not require a LAN usage quota;
+- signed paid entitlements are verified locally;
+- entitlement refresh is out-of-band, not required for every check;
+- remote compute is not production-enabled and cannot silently replace a local check.
+
+If a future hosted/model-backed capability is introduced, it requires a separate disclosed capability/data contract, explicit user authorization, bounded cost, and release verification.
+
 ## Verification semantics
 
 Tier availability controls whether a check can execute. It does not control truth.
