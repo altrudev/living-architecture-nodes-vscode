@@ -61,6 +61,25 @@ const lock = JSON.parse(text('package-lock.json') || '{}');
 if (lock.lockfileVersion !== 3) failures.push('package-lock.json must use lockfileVersion 3');
 if (lock.packages?.['']?.devDependencies?.['@vscode/vsce'] !== '4.0.0') failures.push('package-lock root must pin @vscode/vsce 4.0.0');
 
+const security = manifest.security_baseline || {};
+if (security.runtime_dependencies !== 0) failures.push('security baseline must record zero runtime dependencies');
+if (security.scanner_reads_source_contents !== false) failures.push('scanner source-content boundary drifted');
+if (security.runtime_network_access !== false) failures.push('runtime network boundary drifted');
+if (security.runtime_shell_execution !== false) failures.push('runtime shell-execution boundary drifted');
+if (security.private_vulnerability_reporting !== true) failures.push('private vulnerability reporting must be enabled');
+if (security.diagnostic_export?.schema !== 'explicit-allowlist') failures.push('diagnostic export must use explicit allowlist schema');
+if (security.diagnostic_export?.absolute_workspace_paths_exported !== false) failures.push('diagnostic export must omit absolute workspace paths');
+if (security.diagnostic_export?.full_repository_inventory_exported !== false) failures.push('diagnostic export must omit full repository inventory');
+if (security.diagnostic_export?.secret_metadata_redaction !== true) failures.push('diagnostic export redaction must remain enabled');
+if (security.diagnostic_export?.markdown_path_escaping !== true) failures.push('diagnostic Markdown path escaping must remain enabled');
+if (security.diagnostic_export?.workspace_trust_required !== true) failures.push('diagnostic export must require Workspace Trust');
+if (security.diagnostic_export?.atomic_replacement !== true) failures.push('diagnostic export must use atomic replacement');
+if (security.diagnostic_export?.node_draft_exclusive_create !== true) failures.push('node drafts must use exclusive create');
+if (security.release_toolchain?.package_lock_required !== true) failures.push('release toolchain must require package-lock');
+if (security.release_toolchain?.vsce_version !== '4.0.0') failures.push('security baseline vsce version drifted');
+if (security.release_toolchain?.install_command !== 'npm ci --ignore-scripts') failures.push('security baseline install command drifted');
+if (security.release_toolchain?.ad_hoc_npx_fetch !== false) failures.push('ad-hoc npx tool fetching must remain disabled');
+
 const titleMenus = pkg.contributes?.menus?.['view/title'] || [];
 const exportMenu = titleMenus.find((x) => x.command === 'livingArchitectureNodes.exportHandoffBundle');
 if (!exportMenu?.when?.includes('isWorkspaceTrusted')) failures.push('export command is not hidden in Restricted Mode');
@@ -159,3 +178,5 @@ console.log(`Trusted publishing policy: ${manifest.trusted_publishing.policy_con
 console.log('Workspace Trust: limited; mutations require trust');
 console.log('Runtime dependencies: none');
 console.log('Release toolchain: locked @vscode/vsce 4.0.0 via npm ci --ignore-scripts');
+console.log('Client-data export: explicit allowlist; no source contents, absolute workspace path, or full inventory');
+console.log('Security reporting: GitHub private vulnerability reporting enabled');
