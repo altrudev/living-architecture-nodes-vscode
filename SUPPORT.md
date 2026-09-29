@@ -14,7 +14,11 @@ Please include the extension version, VS Code version, operating system, a minim
 
 Do **not** place credentials, private repository contents, entitlement tokens, customer data, or exploitable private details in a public issue.
 
-Use the private contact route published through Altru.dev:
+Prefer GitHub private vulnerability reporting:
+
+https://github.com/altrudev/living-architecture-nodes-vscode/security/advisories/new
+
+If that route is unavailable, use the private contact route published through Altru.dev:
 
 https://altru.dev
 
@@ -23,3 +27,6 @@ https://altru.dev
 Support for the Free extension covers installation, local scanning, node generation, exports, and documented extension behavior.
 
 Future paid-plan support terms will be published before paid entitlements are activated.
+
+
+See [SECURITY.md](SECURITY.md) for the security and client-data handling boundary.
