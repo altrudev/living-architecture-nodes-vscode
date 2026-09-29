@@ -35,6 +35,15 @@ if (manifest.pre_release_publish_flag !== '--pre-release') failures.push('pre-re
 if (cmpVersion(manifest.stable_target_version, pkg.version) <= 0) failures.push('stable target version must be greater than pre-release version');
 if (pkg.pricing !== manifest.pricing_label || pkg.pricing !== 'Free') failures.push('Marketplace pricing label must remain Free');
 if (manifest.paid_entitlements_enabled !== false) failures.push('paid entitlements must remain disabled until production service is verified');
+const commercial = manifest.commercial_model || {};
+if (JSON.stringify(commercial.tiers) !== JSON.stringify(['free','pro','team'])) failures.push('commercial tier contract must be Free/Pro/Team');
+if (commercial.free_enabled !== true || commercial.free_account_required !== false) failures.push('Free tier must remain active and account-optional');
+if (commercial.pro_defined !== true || commercial.team_defined !== true) failures.push('Pro and Team must remain defined');
+if (commercial.paid_production_enabled !== false) failures.push('paid production must remain disabled before monetization gates pass');
+if (commercial.paid_prices_published !== false) failures.push('paid prices must not be claimed as published before approval');
+if (commercial.enterprise_issuable !== false) failures.push('Enterprise must remain future-only until separately implemented');
+if (commercial.public_tier_contract !== 'PRODUCT-TIERS.md') failures.push('public tier contract source drifted');
+if (commercial.unavailable_paid_check_status !== 'NOT_VERIFIED') failures.push('unavailable paid checks must remain NOT_VERIFIED');
 if (manifest.pre_release_publish_allowed !== false) failures.push('pre-release publishing must remain blocked while Marketplace authentication is unavailable');
 if (!Array.isArray(manifest.pre_release_blockers) || manifest.pre_release_blockers.length === 0) failures.push('pre-release publication blocker must be recorded');
 if (manifest.stable_publish_allowed !== false) failures.push('stable publishing must remain blocked at this stage');
@@ -46,7 +55,7 @@ if (manifest.trusted_publishing?.workflow !== '.github/workflows/publish-marketp
 if (manifest.trusted_publishing?.audience !== 'marketplace.visualstudio.com') failures.push('trusted publishing OIDC audience drifted');
 if (typeof manifest.trusted_publishing?.policy_configured !== 'boolean') failures.push('trusted publishing policy_configured must be explicit');
 
-for (const rel of ['README.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','SECURITY.md','LICENSE','media/lan-marketplace.png','.vscodeignore','package-lock.json','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
+for (const rel of ['README.md','PRODUCT-TIERS.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','SECURITY.md','LICENSE','media/lan-marketplace.png','.vscodeignore','package-lock.json','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
 
 const vscodeIgnore = text('.vscodeignore');
 if (!vscodeIgnore.split(/\r?\n/).includes('.github/**')) failures.push('.github/** must be excluded from the published VSIX');
@@ -122,6 +131,9 @@ if (/npx\s+--yes\s+@vscode\/vsce/.test(workflow)) {
 const readme = text('README.md');
 for (const phrase of [
   'Marketplace extension remains **Free**',
+  'commercial product model uses **Free / Pro / Team**',
+  'Paid capabilities and paid prices are not enabled',
+  'See [PRODUCT-TIERS.md](PRODUCT-TIERS.md) for the public tier contract.',
   'Generated drafts are **not verified architecture truth**',
   'NOT VERIFIED',
   'no telemetry',
@@ -140,6 +152,11 @@ for (const pattern of [
   /Paid capabilities are not enabled in the \d+\.\d+\.\d+ pre-release\./
 ]) {
   if (pattern.test(readme)) failures.push(`README contains stale version-specific Marketplace copy: ${pattern}`);
+}
+
+const tierContract = text('PRODUCT-TIERS.md');
+for (const phrase of ['Free / Pro / Team','Free  ACTIVE','Pro   DEFINED / NOT YET PRODUCTION-ACTIVE','Team  DEFINED / NOT YET PRODUCTION-ACTIVE','Exact paid prices are not published or active yet','Enterprise/offline/self-hosted licensing is a future direction only']) {
+  if (!tierContract.includes(phrase)) failures.push(`PRODUCT-TIERS.md missing required statement: ${phrase}`);
 }
 
 const changelog = text('CHANGELOG.md');
@@ -172,6 +189,9 @@ console.log(`Marketplace publish gate: ${manifest.pre_release_publish_allowed ? 
 if (!manifest.pre_release_publish_allowed) console.log(`Publish blocker: ${manifest.pre_release_blockers.join('; ')}`);
 console.log(`Stable target: ${manifest.stable_target_version} (blocked until production gates pass)`);
 console.log('Pricing label: Free');
+console.log('Commercial tiers: Free / Pro / Team');
+console.log('Pro/Team production activation: BLOCKED pending monetization gates');
+console.log('Enterprise entitlement: NOT IMPLEMENTED');
 console.log('Marketplace listing/docs/privacy/license: synchronized');
 console.log('Publishing auth: GitHub Actions trusted OIDC');
 console.log(`Trusted publishing policy: ${manifest.trusted_publishing.policy_configured ? 'CONFIGURED' : 'PENDING'}`);

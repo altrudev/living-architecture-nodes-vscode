@@ -25,6 +25,20 @@ Purpose: validate the commercial product boundary and release path without prema
 - Release/listing manifest and deterministic preflight
 - Actual VSIX artifact inspection
 
+
+## Canonical commercial model
+
+The product tier contract is **Free / Pro / Team**.
+
+- Free is active and useful without payment.
+- Pro is the individual paid tier.
+- Team is the organization paid tier.
+- Pro and Team production pricing are not yet activated.
+- Enterprise/offline/self-hosted licensing remains future-only and is not currently issuable.
+- A paid tier increases available verification depth; it must never fabricate a better or worse verification outcome.
+
+Paid activation remains blocked until approved pricing, Stripe configuration, signed-entitlement verification, customer terms, cancellation/downgrade behavior, privacy/security alignment, and final release verification all pass.
+
 ## Stable target — 0.2.0
 
 Stable promotion is blocked until all of these are verified:
