@@ -2,6 +2,8 @@
 
 ## 0.1.3 — Pre-release
 
+Marketplace publication verified live.
+
 Local-first economics and commercial-boundary synchronization.
 
 ### Changed

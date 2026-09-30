@@ -89,5 +89,14 @@
     "remote_compute_production_enabled": false,
     "remote_compute_silent_fallback_allowed": false
   },
-  "current_stable_marketplace_verified": true
+  "current_stable_marketplace_verified": true,
+  "pre_release_marketplace_live": true,
+  "pre_release_marketplace_verified": true,
+  "pre_release_marketplace_version": "0.1.3",
+  "pre_release_source_commit": "f009864aec104577d721e3be478a31d50cf4c1fa",
+  "pre_release_artifact_sha256": "f487f7ed07be9f814a34c744401dbd766f5ee26d5dc459cf93ada3c4a44aa4b9",
+  "pre_release_artifact_files": 45,
+  "pre_release_publication_method": "manual-vsix-upload",
+  "pre_release_marketplace_last_updated_utc": "2026-09-30T00:56:12.6Z",
+  "pre_release_marketplace_byte_match_verified": true
 }

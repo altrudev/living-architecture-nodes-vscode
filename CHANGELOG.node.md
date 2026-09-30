@@ -1,3 +1,11 @@
+## 2026-09-29 — 0.1.3 Marketplace publication verified live
+
+- Marketplace API reports 0.1.3 validated / Free / pre-release.
+- Marketplace-served VSIX matched the approved artifact byte-for-byte after transport decoding.
+- SHA-256 verified: f487f7ed07be9f814a34c744401dbd766f5ee26d5dc459cf93ada3c4a44aa4b9.
+- Source commit: f009864aec104577d721e3be478a31d50cf4c1fa.
+- Manual VSIX publication completed; OIDC trusted publishing remains pending.
+
 # CHANGELOG.node.md
 
 ## 2026-09-29 — 0.1.2 client-data and self-security hardening

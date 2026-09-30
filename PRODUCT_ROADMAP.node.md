@@ -45,3 +45,8 @@ The roadmap must not contain signing keys, credentials, private repository names
 ## Marketplace live-state invariant
 
 The public roadmap current-stable heading must match `release/listing-manifest.json.current_stable_version`, which is independently verified against the live Visual Studio Marketplace before a new pre-release is promoted.
+
+
+## Live pre-release state
+
+The 0.1.3 pre-release is live and independently verified in Visual Studio Marketplace. This does not remove the separate OIDC trusted-publishing gate for future automated publication.

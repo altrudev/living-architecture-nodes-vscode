@@ -50,3 +50,8 @@ The release gate now requires SECURITY.md and package-lock.json, requires zero r
 ### Live Marketplace stable version
 
 The release gate requires an explicit independently verified `current_stable_version`, requires the 0.1.3 pre-release to be greater than it, and requires `PRODUCT_ROADMAP.md` to carry the same current-stable value. This prevents repository release-state drift from the public Marketplace.
+
+
+### Live pre-release artifact evidence
+
+The release gate requires the live Marketplace pre-release version to equal the package version and requires the recorded source commit, SHA-256, file count, manual publication method, and byte-match verification evidence. This is independent of the still-pending automated OIDC publishing gate.
