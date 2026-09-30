@@ -57,6 +57,16 @@ Tracks cascade risk and release-sensitive coupling across the Living Architectur
 - Release toolchain locked to @vscode/vsce 4.0.0 with package-lock and npm ci --ignore-scripts.
 - GitHub private vulnerability reporting verified enabled.
 
+### 2026-09-29 Marketplace 0.1.3 pre-release verification
+
+- Visual Studio Marketplace API reports version 0.1.3 as validated, Free, and pre-release.
+- Marketplace-served package was downloaded through the public gallery endpoint.
+- Microsoft transport used gzip; after decoding, the VSIX matched the approved artifact byte-for-byte.
+- Verified SHA-256: `f487f7ed07be9f814a34c744401dbd766f5ee26d5dc459cf93ada3c4a44aa4b9`.
+- Verified package file count: 45.
+- Source commit: `f009864aec104577d721e3be478a31d50cf4c1fa`.
+- Manual VSIX upload succeeded. Trusted GitHub OIDC publishing remains pending and is still a separate automation hardening gate.
+
 
 ### Troubleshooting order
 

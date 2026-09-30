@@ -11,9 +11,11 @@
 - Quick links to `ARCH.md`, `NERVE.md`, and `CHANGELOG.node.md`
 - Local AI/dev handoff export bundle
 
-## Controlled pre-release — 0.1.3
+## Controlled pre-release — 0.1.3 — LIVE
 
 Purpose: validate the commercial product boundary and release path without prematurely enabling paid capabilities.
+
+Marketplace status: **published and independently verified live as a pre-release**. The Marketplace-served VSIX was downloaded and matched byte-for-byte to the Frequency-approved artifact.
 
 - Marketplace listing refresh
 - Privacy/support/licensing refresh

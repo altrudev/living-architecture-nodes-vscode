@@ -39,3 +39,8 @@ The repository-side OIDC workflow is implemented, but Visual Studio Marketplace 
 ## Regression triggers
 
 Any security-baseline field changes without matching implementation/tests, trusted-publishing identity drift, long-lived Marketplace credentials, or publication gates becoming true without evidence.
+
+
+## Marketplace live pre-release evidence
+
+The manifest records whether the 0.1.3 pre-release is live, the exact source commit, approved artifact SHA-256, file count, publication method, public Marketplace timestamp, and byte-match verification. Automated OIDC publishing remains separately gated.
