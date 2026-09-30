@@ -33,6 +33,9 @@ if (pkg.version !== manifest.pre_release_version) failures.push('package version
 if (manifest.channel !== 'pre-release') failures.push('listing manifest channel must be pre-release');
 if (manifest.pre_release_publish_flag !== '--pre-release') failures.push('pre-release publishing flag is missing');
 if (cmpVersion(manifest.stable_target_version, pkg.version) <= 0) failures.push('stable target version must be greater than pre-release version');
+if (!/^\d+\.\d+\.\d+$/.test(manifest.current_stable_version || '')) failures.push('current stable Marketplace version must be explicit semver');
+if (manifest.current_stable_marketplace_verified !== true) failures.push('current stable Marketplace version must be independently verified');
+if (cmpVersion(pkg.version, manifest.current_stable_version) <= 0) failures.push('pre-release version must be greater than current stable Marketplace version');
 if (pkg.pricing !== manifest.pricing_label || pkg.pricing !== 'Free') failures.push('Marketplace pricing label must remain Free');
 if (manifest.paid_entitlements_enabled !== false) failures.push('paid entitlements must remain disabled until production service is verified');
 const commercial = manifest.commercial_model || {};
@@ -164,6 +167,9 @@ for (const pattern of [
   if (pattern.test(readme)) failures.push(`README contains stale version-specific Marketplace copy: ${pattern}`);
 }
 
+const roadmap = text('PRODUCT_ROADMAP.md');
+if (!roadmap.includes(`## Current stable — ${manifest.current_stable_version}`)) failures.push('PRODUCT_ROADMAP current stable version disagrees with Marketplace manifest');
+
 const tierContract = text('PRODUCT-TIERS.md');
 for (const phrase of ['Free / Pro / Team','Free  ACTIVE','Pro   DEFINED / NOT YET PRODUCTION-ACTIVE','Team  DEFINED / NOT YET PRODUCTION-ACTIVE','Exact paid prices are not published or active yet','Enterprise/offline/self-hosted licensing is a future direction only','local computation by default','subscription grants capability authority, not scan credits','ordinary local scans are not metered by LAN','remote compute is not production-enabled']) {
   if (!tierContract.includes(phrase)) failures.push(`PRODUCT-TIERS.md missing required statement: ${phrase}`);
@@ -197,6 +203,7 @@ console.log(`Extension ID: ${manifest.extension_id}`);
 console.log(`Pre-release artifact: ${pkg.version} ${manifest.pre_release_publish_flag}`);
 console.log(`Marketplace publish gate: ${manifest.pre_release_publish_allowed ? 'READY' : 'BLOCKED'}`);
 if (!manifest.pre_release_publish_allowed) console.log(`Publish blocker: ${manifest.pre_release_blockers.join('; ')}`);
+console.log(`Current stable Marketplace: ${manifest.current_stable_version} (verified)`);
 console.log(`Stable target: ${manifest.stable_target_version} (blocked until production gates pass)`);
 console.log('Pricing label: Free');
 console.log('Commercial tiers: Free / Pro / Team');

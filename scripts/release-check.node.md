@@ -45,3 +45,8 @@ The check distinguishes repository configuration from external Marketplace trust
 ### 2026-09-29 client-data hardening
 
 The release gate now requires SECURITY.md and package-lock.json, requires zero runtime dependencies, pins @vscode/vsce 4.0.0 in both package metadata and lockfile, requires npm ci --ignore-scripts in Marketplace automation, and rejects ad-hoc npx fetching of vsce.
+
+
+### Live Marketplace stable version
+
+The release gate requires an explicit independently verified `current_stable_version`, requires the 0.1.3 pre-release to be greater than it, and requires `PRODUCT_ROADMAP.md` to carry the same current-stable value. This prevents repository release-state drift from the public Marketplace.

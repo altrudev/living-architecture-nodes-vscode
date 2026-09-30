@@ -5,7 +5,7 @@
   "changelog_source": "CHANGELOG.md",
   "support_source": "SUPPORT.md",
   "privacy_source": "PRIVACY.md",
-  "current_stable_version": "0.1.0",
+  "current_stable_version": "0.1.1",
   "pre_release_version": "0.1.3",
   "pre_release_publish_flag": "--pre-release",
   "stable_target_version": "0.2.0",
@@ -88,5 +88,6 @@
     "entitlement_refresh_per_check": false,
     "remote_compute_production_enabled": false,
     "remote_compute_silent_fallback_allowed": false
-  }
+  },
+  "current_stable_marketplace_verified": true
 }

@@ -1,6 +1,6 @@
 # Product Roadmap — Living Architecture Nodes for VS Code
 
-## Current stable — 0.1.0
+## Current stable — 0.1.1
 
 - Workspace scan
 - Architecture-memory health score

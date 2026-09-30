@@ -40,3 +40,8 @@ The roadmap must not contain signing keys, credentials, private repository names
 - Roadmap claims capabilities that are not implemented.
 - Stable release blockers disappear before verification.
 - Free/paid semantics diverge from the product constitution and listing.
+
+
+## Marketplace live-state invariant
+
+The public roadmap current-stable heading must match `release/listing-manifest.json.current_stable_version`, which is independently verified against the live Visual Studio Marketplace before a new pre-release is promoted.
