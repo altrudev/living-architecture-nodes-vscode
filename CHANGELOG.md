@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.4 — Pre-release candidate
+
+Canonical adapter-engine migration.
+
+### Changed
+
+- Converted VS Code scanning into a thin `lan.adapter.v1` host adapter.
+- Vendored the exact allowlisted Free runtime from private LAN Core commit `44f0b9400b4ccba2bcc63660c59d042cd6d1a400`.
+- Delegated workspace authority and signed entitlement consumption to the same canonical runtime.
+- Preserved VS Code-specific health scoring, tree UI, commands, and custom exclusion globs as host policy.
+- Added deterministic vendored-core provenance/hash verification.
+
+### Release state
+
+- Live Marketplace pre-release remains 0.1.3.
+- 0.1.4 is not published until the adapter candidate passes full Frequency and Marketplace promotion.
+
 ## 0.1.3 — Pre-release
 
 Marketplace publication verified live.

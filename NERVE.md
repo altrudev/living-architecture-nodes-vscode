@@ -94,3 +94,10 @@ If mutation/export security fails:
 - Stale listing or changelog.
 - Paid tier affecting evidence truth.
 - Private keys, payment secrets, or private product code appearing in the VSIX.
+
+### 0.1.4 canonical adapter migration
+
+- `src/adapters/vscode.js` is the host translation boundary.
+- `vendor/lan-core/` is generated from one exact private Core commit and verified by hash.
+- `src/scanner.js`, `src/product/workspace-authority.js`, and `src/product/entitlement.js` are compatibility wrappers, not independent engines.
+- Reintroducing duplicate canonical finding/authority/entitlement logic is adapter drift.

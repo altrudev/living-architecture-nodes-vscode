@@ -40,6 +40,12 @@ NOT VERIFIED
 
 That does not mean failed or unsafe.
 
+## Adapter architecture
+
+The official VS Code extension is a thin host adapter over the canonical local LAN Free engine. VS Code supplies workspace settings and local modification-time evidence; the shared engine owns canonical missing/dirty/orphan findings, workspace authority, and entitlement-consumer semantics.
+
+VS Code-specific health scoring and UI presentation remain host policy. The adapter does not turn those presentation signals into semantic architecture proof. The vendored runtime is pinned to an exact private-core commit with per-file SHA-256 provenance.
+
 ## Restricted Mode / Workspace Trust
 
 Read-only architecture-memory scanning remains available in Restricted Mode.

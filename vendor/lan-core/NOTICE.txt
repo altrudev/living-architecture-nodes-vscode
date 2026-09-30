@@ -1,0 +1,10 @@
+Living Architecture Nodes Official Surface Runtime
+
+Copyright (c) 2026 Valentyn Rukhaylo / Altru.dev.
+All rights reserved.
+
+This runtime is generated from the private Living Architecture Nodes Core repository for use in official Altru.dev Living Architecture Nodes product surfaces.
+
+Distribution inside an official product artifact does not grant an open-source license to this runtime. End-user rights are governed by the license/EULA supplied with the official host product.
+
+This Free surface runtime contains no Pro/Team entitlement issuer, billing secret, private signing key, remote compute implementation, or private commercial product source.

@@ -6,6 +6,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const pkg = require('../package.json');
 const manifest = require('../release/listing-manifest.json');
+const { verifyVendoredCore, EXPECTED_CORE_COMMIT } = require('./verify-vendored-core');
 const failures = [];
 
 function requireFile(rel) {
@@ -38,12 +39,18 @@ if (manifest.current_stable_marketplace_verified !== true) failures.push('curren
 if (cmpVersion(pkg.version, manifest.current_stable_version) <= 0) failures.push('pre-release version must be greater than current stable Marketplace version');
 if (manifest.pre_release_marketplace_live !== true) failures.push('0.1.3 pre-release must be recorded as live');
 if (manifest.pre_release_marketplace_verified !== true) failures.push('live pre-release must be independently verified');
-if (manifest.pre_release_marketplace_version !== pkg.version) failures.push('live Marketplace pre-release version must equal package version');
+if (manifest.pre_release_marketplace_version !== '0.1.3') failures.push('verified live Marketplace pre-release must remain 0.1.3 until replacement publication');
+if (cmpVersion(pkg.version, manifest.pre_release_marketplace_version) <= 0) failures.push('candidate pre-release must be newer than verified live pre-release');
 if (manifest.pre_release_source_commit !== 'f009864aec104577d721e3be478a31d50cf4c1fa') failures.push('live pre-release source commit drifted');
 if (manifest.pre_release_artifact_sha256 !== 'f487f7ed07be9f814a34c744401dbd766f5ee26d5dc459cf93ada3c4a44aa4b9') failures.push('live pre-release artifact hash drifted');
 if (manifest.pre_release_artifact_files !== 45) failures.push('live pre-release artifact file count drifted');
 if (manifest.pre_release_publication_method !== 'manual-vsix-upload') failures.push('live pre-release publication method drifted');
 if (manifest.pre_release_marketplace_byte_match_verified !== true) failures.push('Marketplace-served VSIX byte-match must be verified');
+const vendored = verifyVendoredCore();
+for (const failure of vendored.failures) failures.push('vendored core: ' + failure);
+if (manifest.adapter_runtime?.contract !== 'lan.adapter.v1') failures.push('adapter runtime contract drifted');
+if (manifest.adapter_runtime?.core_commit !== EXPECTED_CORE_COMMIT) failures.push('adapter runtime core commit drifted');
+if (manifest.adapter_runtime?.runtime_dependencies !== 0 || manifest.adapter_runtime?.network_access !== false || manifest.adapter_runtime?.telemetry !== false) failures.push('adapter runtime trust posture drifted');
 if (pkg.pricing !== manifest.pricing_label || pkg.pricing !== 'Free') failures.push('Marketplace pricing label must remain Free');
 if (manifest.paid_entitlements_enabled !== false) failures.push('paid entitlements must remain disabled until production service is verified');
 const commercial = manifest.commercial_model || {};
@@ -73,7 +80,7 @@ if (manifest.trusted_publishing?.workflow !== '.github/workflows/publish-marketp
 if (manifest.trusted_publishing?.audience !== 'marketplace.visualstudio.com') failures.push('trusted publishing OIDC audience drifted');
 if (typeof manifest.trusted_publishing?.policy_configured !== 'boolean') failures.push('trusted publishing policy_configured must be explicit');
 
-for (const rel of ['README.md','PRODUCT-TIERS.md','CHANGELOG.md','SUPPORT.md','PRIVACY.md','SECURITY.md','LICENSE','media/lan-marketplace.png','.vscodeignore','package-lock.json','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
+for (const rel of ['README.md','PRODUCT-TIERS.md','CHANGELOG.md','vendor/lan-core/manifest.json','vendor/lan-core/NOTICE.txt','vendor/lan-core/index.cjs','vendor/lan-core/authority.cjs','vendor/lan-core/entitlement.cjs','SUPPORT.md','PRIVACY.md','SECURITY.md','LICENSE','media/lan-marketplace.png','.vscodeignore','package-lock.json','.github/workflows/publish-marketplace.yml','.github/workflows/publish-marketplace.node.md']) requireFile(rel);
 
 const vscodeIgnore = text('.vscodeignore');
 if (!vscodeIgnore.split(/\r?\n/).includes('.github/**')) failures.push('.github/** must be excluded from the published VSIX');
@@ -208,11 +215,13 @@ if (failures.length) {
 
 console.log('LAN Marketplace release check: VERIFIED');
 console.log(`Extension ID: ${manifest.extension_id}`);
-console.log(`Pre-release artifact: ${pkg.version} ${manifest.pre_release_publish_flag}`);
+console.log(`Candidate pre-release artifact: ${pkg.version} ${manifest.pre_release_publish_flag}`);
 console.log(`Automated Marketplace publish gate: ${manifest.pre_release_publish_allowed ? 'READY' : 'BLOCKED'}`);
 if (!manifest.pre_release_publish_allowed) console.log(`Automation blocker: ${manifest.pre_release_blockers.join('; ')}`);
 console.log(`Current stable Marketplace: ${manifest.current_stable_version} (verified)`);
 console.log(`Live pre-release Marketplace: ${manifest.pre_release_marketplace_version} (verified)`);
+console.log(`Adapter runtime: ${manifest.adapter_runtime.contract} @ core ${manifest.adapter_runtime.core_commit}`);
+console.log('Vendored core provenance: VERIFIED');
 console.log(`Live artifact SHA-256: ${manifest.pre_release_artifact_sha256}`);
 console.log('Marketplace-served VSIX byte match: VERIFIED');
 console.log(`Publication method: ${manifest.pre_release_publication_method}`);

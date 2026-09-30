@@ -1,0 +1,27 @@
+{
+  "schema": "lan.surface-runtime.manifest.v1",
+  "coreVersion": "0.2.0-alpha.0",
+  "coreCommit": "44f0b9400b4ccba2bcc63660c59d042cd6d1a400",
+  "adapterContract": "lan.adapter.v1",
+  "runtimeDependencies": 0,
+  "networkAccess": false,
+  "telemetry": false,
+  "files": {
+    "index.cjs": {
+      "sha256": "bf8da4caf3ffc1dc7cc863e772707ead7b19232f3b2332f6acd765dd45990c57",
+      "bytes": 8694
+    },
+    "authority.cjs": {
+      "sha256": "c7d4dd95af1e748b0f376fb313ed7e4d14d9225a3ee0950e5509928d51ccaca8",
+      "bytes": 5686
+    },
+    "entitlement.cjs": {
+      "sha256": "640b19c67392c6339dd212c2230c4961dc4f1bcbf82c0853a0cddefe70f6115d",
+      "bytes": 2874
+    },
+    "NOTICE.txt": {
+      "sha256": "6f858d5ec0fa696f1d7eb0497cb74e8e4686a8c95c5bd65de31ab6387915cfc4",
+      "bytes": 652
+    }
+  }
+}
