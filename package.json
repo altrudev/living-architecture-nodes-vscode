@@ -2,7 +2,7 @@
   "name": "living-architecture-nodes-vscode",
   "displayName": "Living Architecture Nodes",
   "description": "Keep codebase architecture memory current: detect missing or stale nodes, review drift, and export local AI/dev handoff context.",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "altrudev",
   "author": {
     "name": "Valentyn Rukhaylo / Altru.dev"
@@ -223,8 +223,9 @@
     "self-check": "node scripts/self-check.js",
     "release:check": "node scripts/release-check.js",
     "test:product": "node --test test/*.test.js",
-    "test": "npm run self-check && npm run release:check && npm run test:product",
-    "package": "vsce package"
+    "test": "npm run verify:core && npm run self-check && npm run release:check && npm run test:product",
+    "package": "vsce package",
+    "verify:core": "node scripts/verify-vendored-core.js"
   },
   "devDependencies": {
     "@vscode/vsce": "4.0.0"

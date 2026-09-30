@@ -14,7 +14,7 @@ Locks the development-only Marketplace packaging toolchain for reproducible depe
 
 ## Current state
 
-Lockfile version 3 for the 0.1.3 client-data and supply-chain hardening pass.
+Lockfile version 3 for the 0.1.4 client-data and supply-chain hardening pass.
 
 ## Regression triggers
 

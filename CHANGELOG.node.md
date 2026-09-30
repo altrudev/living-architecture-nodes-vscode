@@ -1,3 +1,10 @@
+## 2026-09-29 — 0.1.4 adapter candidate
+
+- VS Code scan semantics now delegate to canonical `lan.adapter.v1` engine.
+- Workspace authority and entitlement consumer also delegate to vendored LAN Core.
+- Core provenance pinned to `44f0b9400b4ccba2bcc63660c59d042cd6d1a400`.
+- Live Marketplace pre-release 0.1.3 remains immutable.
+
 ## 2026-09-29 — 0.1.3 Marketplace publication verified live
 
 - Marketplace API reports 0.1.3 validated / Free / pre-release.

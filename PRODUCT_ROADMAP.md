@@ -11,7 +11,7 @@
 - Quick links to `ARCH.md`, `NERVE.md`, and `CHANGELOG.node.md`
 - Local AI/dev handoff export bundle
 
-## Controlled pre-release — 0.1.3 — LIVE
+## Live pre-release — 0.1.3
 
 Purpose: validate the commercial product boundary and release path without prematurely enabling paid capabilities.
 
@@ -27,6 +27,14 @@ Marketplace status: **published and independently verified live as a pre-release
 - Release/listing manifest and deterministic preflight
 - Actual VSIX artifact inspection
 
+
+## Adapter candidate — 0.1.4
+
+- canonical `lan.adapter.v1` findings from one private LAN Core;
+- VS Code retained as thin host adapter;
+- exact core commit and per-file provenance enforced;
+- workspace authority and entitlement consumption shared with other official adapters;
+- published 0.1.3 remains immutable until 0.1.4 promotion is independently verified.
 
 ## Canonical commercial model
 

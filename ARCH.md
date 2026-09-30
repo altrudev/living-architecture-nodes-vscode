@@ -24,6 +24,10 @@ It is not responsible for:
 - hidden telemetry;
 - treating generated drafts as verified architecture truth.
 
+### Adapter architecture
+
+VS Code is a thin adapter over the canonical vendored LAN Free runtime. It translates VS Code settings and mtime evidence into `lan.adapter.request.v1`, then maps canonical findings into VS Code-specific health/UI policy. Canonical finding, workspace-authority, and entitlement-consumer semantics are not reimplemented in the host layer.
+
 ### Trust and authority
 
 - Read-only scanning may operate in Restricted Mode.
@@ -61,7 +65,7 @@ It is not responsible for:
 
 ### Current stability state
 
-0.1.3 pre-release candidate toward stable 0.2.0.
+0.1.4 adapter pre-release candidate toward stable 0.2.0.
 
 ### Current commercial state
 
